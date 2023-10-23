@@ -2,13 +2,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Manual from './components/manual';
 
+import Home from './pages/Home'
+
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Router>
-          <Routes />
-        </Router>
+        <Routes>
+          <Route path='/' element={ <Home /> }/>
+        </Routes>
       </BrowserRouter>
     </div>
   );
