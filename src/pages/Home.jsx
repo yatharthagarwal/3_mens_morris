@@ -10,6 +10,9 @@ const Home = () => {
                 <li>
                     <Link to='/manual'>Manual</Link>
                 </li>
+                <li>
+                    <Link to='/board'>Board</Link>
+                </li>
             </ul>
         </nav>
         <Outlet />
