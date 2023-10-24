@@ -1,8 +1,19 @@
-import React from 'react'
+import React from 'react';
+
+import { Link, Outlet } from 'react-router-dom';
 
 const Home = () => {
     return (
-        <h1>Home</h1>
+        <>
+        <nav>
+            <ul>
+                <li>
+                    <Link to='/manual'>Manual</Link>
+                </li>
+            </ul>
+        </nav>
+        <Outlet />
+        </>
     )
 }
 
