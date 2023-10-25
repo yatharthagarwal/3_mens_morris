@@ -12,10 +12,25 @@
   background-color: bisque;
 }
 
-.board-slot {
+.board-slot-default {
   border-radius: 50%;
-  height: 10px;
-  width: 10px;
+  height: 20px;
+  width: 20px;
+  background-color: #964B00;
+}
+
+.board-slot-white {
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  background-color: #FFFFFF;
+}
+
+.board-slot-black {
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  background-color: #000000;
 }
 
 #slot-1 {
@@ -69,49 +84,49 @@
 #slot-9 {
   position: absolute;
   left: 250px;
-  top: 150px;
+  top: 125px;
 }
 
 #slot-10 {
   position: absolute;
-  left: 350px;
-  top: 150px;
+  left: 375px;
+  top: 125px;
 }
 
 #slot-11 {
   position: absolute;
-  left: 350px;
+  left: 375px;
   top: 250px;
 }
 
 #slot-12 {
   position: absolute;
-  left: 350px;
-  top: 350px;
+  left: 375px;
+  top: 375px;
 }
 
 #slot-13 {
   position: absolute;
   left: 250px;
-  top: 350px;
+  top: 375px;
 }
 
 #slot-14 {
   position: absolute;
-  left: 150px;
-  top: 350px;
+  left: 125px;
+  top: 375px;
 }
 
 #slot-15 {
   position: absolute;
-  left: 150px;
+  left: 125px;
   top: 250px;
 }
 
 #slot-16 {
   position: absolute;
-  left: 150px;
-  top: 150px;
+  left: 125px;
+  top: 125px;
 }
 
 #slot-17 {
@@ -165,224 +180,224 @@
 /* lines */
 #line-1-2 {
   position: absolute;
-  top: 195px;
-  left: 255px;
+  top: 200px;
+  left: 260px;
   width: 50px;
 }
 
 #line-2-3 {
   position: absolute;
-  top: 195px;
-  left: 305px;
+  top: 200px;
+  left: 310px;
   height: 50px;
 }
 
 #line-3-4 {
   position: absolute;
-  top: 245px;
-  left: 305px;
+  top: 250px;
+  left: 310px;
   height: 50px;
 }
 
 #line-4-5 {
   position: absolute;
-  top: 295px;
-  left: 255px;
+  top: 300px;
+  left: 260px;
   width: 50px;
 }
 
 #line-5-6 {
   position: absolute;
-  top: 295px;
-  left: 205px;
+  top: 300px;
+  left: 210px;
   width: 50px;
 }
 
 #line-6-7 {
   position: absolute;
-  top: 245px;
-  left: 205px;
+  top: 250px;
+  left: 210px;
   height: 50px;
 }
 
 #line-7-8 {
   position: absolute;
-  top: 195px;
-  left: 205px;
+  top: 200px;
+  left: 210px;
   height: 50px;
 }
 
 #line-8-1 {
   position: absolute;
-  top: 195px;
-  left: 205px;
+  top: 200px;
+  left: 210px;
   width: 50px;
 }
 
 #line-1-9 {
   position: absolute;
-  top: 145px;
-  left: 255px;
-  height: 50px;
+  top: 125px;
+  left: 260px;
+  height: 75px;
 }
 
 #line-3-11 {
   position: absolute;
-  top: 245px;
-  left: 305px;
-  width: 50px;
+  top: 250px;
+  left: 310px;
+  width: 75px;
 }
 
 #line-5-13 {
   position: absolute;
-  top: 295px;
-  left: 255px;
-  height: 50px;
+  top: 300px;
+  left: 260px;
+  height: 75px;
 }
 
 #line-7-15 {
   position: absolute;
-  top: 245px;
-  left: 155px;
-  width: 50px;
+  top: 250px;
+  left: 135px;
+  width: 75px;
 }
 
 #line-9-10 {
   position: absolute;
-  top: 145px;
-  left: 255px;
-  width: 100px;
+  top: 125px;
+  left: 260px;
+  width: 125px;
 }
 
 #line-10-11 {
   position: absolute;
-  top: 145px;
-  left: 355px;
-  height: 100px;
+  top: 125px;
+  left: 385px;
+  height: 125px;
 }
 
 #line-11-12 {
   position: absolute;
-  top: 245px;
-  left: 355px;
-  height: 100px;
+  top: 250px;
+  left: 385px;
+  height: 125px;
 }
 
 #line-12-13 {
   position: absolute;
-  top: 345px;
-  left: 255px;
-  width: 100px;
+  top: 375px;
+  left: 260px;
+  width: 125px;
 }
 
 #line-13-14 {
   position: absolute;
-  top: 345px;
-  left: 155px;
-  width: 100px;
+  top: 375px;
+  left: 135px;
+  width: 125px;
 }
 
 #line-14-15 {
   position: absolute;
-  top: 245px;
-  left: 155px;
-  height: 100px;
+  top: 250px;
+  left: 135px;
+  height: 125px;
 }
 
 #line-15-16 {
   position: absolute;
-  top: 145px;
-  left: 155px;
-  height: 100px;
+  top: 125px;
+  left: 135px;
+  height: 125px;
 }
 
 #line-16-9 {
   position: absolute;
-  top: 145px;
-  left: 155px;
-  width: 100px;
+  top: 125px;
+  left: 135px;
+  width: 125px;
 }
 
 #line-9-17 {
   position: absolute;
-  top: 45px;
-  left: 255px;
-  height: 100px;
+  top: 50px;
+  left: 260px;
+  height: 75px;
 }
 
 #line-11-19 {
   position: absolute;
-  top: 245px;
-  left: 355px;
-  width: 100px;
+  top: 250px;
+  left: 385px;
+  width: 75px;
 }
 
 #line-13-21 {
   position: absolute;
-  top: 345px;
-  left: 255px;
-  height: 100px;
+  top: 375px;
+  left: 260px;
+  height: 75px;
 }
 
 #line-15-23 {
   position: absolute;
-  top: 245px;
-  left: 55px;
-  width: 100px;
+  top: 250px;
+  left: 60px;
+  width: 75px;
 }
 
 #line-17-18 {
   position: absolute;
-  top: 45px;
-  left: 255px;
+  top: 50px;
+  left: 260px;
   width: 200px;
 }
 
 #line-18-19 {
   position: absolute;
-  top: 45px;
-  left: 455px;
+  top: 50px;
+  left: 460px;
   height: 200px;
 }
 
 #line-19-20 {
   position: absolute;
-  top: 245px;
-  left: 455px;
+  top: 250px;
+  left: 460px;
   height: 200px;
 }
 
 #line-20-21 {
   position: absolute;
-  top: 445px;
-  left: 255px;
+  top: 450px;
+  left: 260px;
   width: 200px;
 }
 
 #line-21-22 {
   position: absolute;
-  top: 445px;
-  left:55px;
+  top: 450px;
+  left: 60px;
   width: 200px;
 }
 
 #line-22-23 {
   position: absolute;
-  top: 245px;
-  left: 55px;
+  top: 250px;
+  left: 60px;
   height: 200px;
 }
 
 #line-23-24 {
   position: absolute;
-  top: 45px;
-  left: 55px;
+  top: 50px;
+  left: 60px;
   height: 200px;
 }
 
 #line-24-17 {
   position: absolute;
-  top: 45px;
-  left: 55px;
+  top: 50px;
+  left: 60px;
   width: 200px;
 }

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import Manual from './components/Manual'
+import Manual from './pages/Manual'
 import Home from './pages/Home'
 import Board from './components/Board'
 
