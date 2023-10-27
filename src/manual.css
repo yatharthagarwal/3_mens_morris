@@ -1,0 +1,23 @@
+.manual {
+    background-image: url('../public/assets/canvas.jpg');
+}
+
+#heading {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 5rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.common {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#sub-heading {
+    font-size: 3rem;
+    text-decoration: underline;
+}
+
+#description {
+    font-size: 1.5rem;
+}
