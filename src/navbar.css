@@ -1,0 +1,11 @@
+.nav {
+    background-image: url('../public/assets/navbar-background.jpg');
+}
+
+.nav-brand {
+    color: yellow;
+    font-weight: bolder;
+    font-style: oblique;
+    font-size: 4rem;
+    text-decoration: none;
+}
