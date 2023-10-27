@@ -10,13 +10,13 @@ const Board = () => {
     const orchestrator = (event) => {
         const id = event.currentTarget.id
 
-        if((turn&1) == 0 && whiteCount > 0) {
+        if((turn&1) === 0 && whiteCount > 0) {
             placePiece("white", id)
 
             if(check3("white", id))
                 removePiece("black")
         }
-        else if((turn&1) == 1 && blackCount > 0) {
+        else if((turn&1) === 1 && blackCount > 0) {
             placePiece("black", id)
             
             if(check3("black", id))
@@ -55,47 +55,59 @@ const Board = () => {
     const check3 = (color, elementId) => {
         const position = parseInt(elementId.split("-")[1])
         if(color === "white") {
-            if(position == 9 || position == 11 || position == 13 || position == 15) {
-                if(whitePosition.includes(position) && ((whitePosition.includes((position-1) % 8 == 0 ? (position-1)+ 8 : position-1) && whitePosition.includes(position+1)) || (whitePosition.includes(position+8) && whitePosition.includes(position-8)))) {
-                    return true
+            if(position === 9 || position === 11 || position === 13 || position === 15) {
+                if(whitePosition.includes(position) &&
+                    ((whitePosition.includes((position-1) % 8 === 0 ? (position-1)+ 8 : position-1) && whitePosition.includes(position+1))
+                    || (whitePosition.includes(position+8) && whitePosition.includes(position-8)))) {
+                        return true
                 }
             }
-            else if(position == 1 || position == 3 || position == 5 || position == 7) {
-                if(whitePosition.includes(position) && ((whitePosition.includes(position+1) && whitePosition.includes((position-1) % 8 == 0 ? position+7 : position-1)) || (whitePosition.includes(position+8) && whitePosition.includes(position+16)))) {
-                    return true
+            else if(position === 1 || position === 3 || position === 5 || position === 7) {
+                if(whitePosition.includes(position) &&
+                    ((whitePosition.includes(position+1) && whitePosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
+                    || (whitePosition.includes(position+8) && whitePosition.includes(position+16)))) {
+                        return true
                 }
             }
-            else if(position == 17 || position == 19 || position == 21 || position == 23) {
-                if(whitePosition.includes(position) && ((whitePosition.includes(position+1) && whitePosition.includes((position-1) % 8 == 0 ? position+7 : position-1)) || (whitePosition.includes(position-8) && whitePosition.includes(position-16)))) {
-                    return true
+            else if(position === 17 || position === 19 || position === 21 || position === 23) {
+                if(whitePosition.includes(position) &&
+                    ((whitePosition.includes(position+1) && whitePosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
+                    || (whitePosition.includes(position-8) && whitePosition.includes(position-16)))) {
+                        return true
                 }
             }
             else {
-                if(whitePosition.includes(position) && whitePosition.includes(position+1 > (Math.floor((position+1)/9 + 1) * 8) ? position-7 : position+1) && whitePosition.includes(position+2 > (Math.floor((position+2)/9 + 1) * 8) ? position-6 : position+2)
-                    || whitePosition.includes(position) && whitePosition.includes(position-1) && whitePosition.includes((position-2) % 8 == 0 ? (position-2) + 8 : position-2)) {
+                if((whitePosition.includes(position) && whitePosition.includes(position+1 > (Math.floor((position+1)/9 + 1) * 8) ? position-7 : position+1) && whitePosition.includes(position+2 > (Math.floor((position+2)/9 + 1) * 8) ? position-6 : position+2))
+                    || (whitePosition.includes(position) && whitePosition.includes(position-1) && whitePosition.includes((position-2) % 8 === 0 ? (position-2) + 8 : position-2))) {
                         return true
                 }
             }
         }
         else {
-            if(position == 9 || position == 11 || position == 13 || position == 15) {
-                if(blackPosition.includes(position) && ((blackPosition.includes((position-1) % 8 == 0 ? (position-1)+ 8 : position-1) && blackPosition.includes(position+1)) || (blackPosition.includes(position+8) && blackPosition.includes(position-8)))) {
-                    return true
+            if(position === 9 || position === 11 || position === 13 || position === 15) {
+                if(blackPosition.includes(position) &&
+                    ((blackPosition.includes((position-1) % 8 === 0 ? (position-1)+ 8 : position-1) && blackPosition.includes(position+1))
+                    || (blackPosition.includes(position+8) && blackPosition.includes(position-8)))) {
+                        return true
                 }
             }
-            else if(position == 1 || position == 3 || position == 5 || position == 7) {
-                if(blackPosition.includes(position) && ((blackPosition.includes(position+1) && blackPosition.includes((position-1) % 8 == 0 ? position+7 : position-1)) || (blackPosition.includes(position+8) && blackPosition.includes(position+16)))) {
-                    return true
+            else if(position === 1 || position === 3 || position === 5 || position === 7) {
+                if(blackPosition.includes(position) &&
+                    ((blackPosition.includes(position+1) && blackPosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
+                    || (blackPosition.includes(position+8) && blackPosition.includes(position+16)))) {
+                        return true
                 }
             }
-            else if(position == 17 || position == 19 || position == 21 || position == 23) {
-                if(blackPosition.includes(position) && ((blackPosition.includes(position+1) && blackPosition.includes((position-1) % 8 == 0 ? position+7 : position-1)) || (blackPosition.includes(position-8) && blackPosition.includes(position-16)))) {
-                    return true
+            else if(position === 17 || position === 19 || position === 21 || position === 23) {
+                if(blackPosition.includes(position) &&
+                    ((blackPosition.includes(position+1) && blackPosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
+                    || (blackPosition.includes(position-8) && blackPosition.includes(position-16)))) {
+                        return true
                 }
             }
             else {
-                if(blackPosition.includes(position) && blackPosition.includes(position+1 > (Math.floor((position+1)/9 + 1) * 8) ? position-7 : position+1) && blackPosition.includes(position+2 > (Math.floor((position+2)/9 + 1) * 8) ? position-6 : position+2)
-                    || blackPosition.includes(position) && blackPosition.includes(position-1) && blackPosition.includes((position-2) % 8 == 0 ? (position-2) + 8 : position-2)) {
+                if((blackPosition.includes(position) && blackPosition.includes(position+1 > (Math.floor((position+1)/9 + 1) * 8) ? position-7 : position+1) && blackPosition.includes(position+2 > (Math.floor((position+2)/9 + 1) * 8) ? position-6 : position+2))
+                    || (blackPosition.includes(position) && blackPosition.includes(position-1) && blackPosition.includes((position-2) % 8 === 0 ? (position-2) + 8 : position-2))) {
                         return true
                 }
             }
