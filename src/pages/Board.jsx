@@ -4,29 +4,64 @@ const Board = () => {
     const [turn, changeTurn] = useState(0)
     const [whiteCount, decWhiteCount] = useState(9)
     const [blackCount, decBlackCount] = useState(9)
-    const [whitePosition, addWhitePosition] = useState([])
-    const [blackPosition, addBlackPosition] = useState([])
+    const [whitePosition, setWhitePosition] = useState([])
+    const [blackPosition, setBlackPosition] = useState([])
+    const [removeBlack, setRemoveBlack] = useState(false)
+    const [removeWhite, setRemoveWhite] = useState(false)
 
     const orchestrator = (event) => {
         const id = event.currentTarget.id
 
-        if((turn&1) === 0 && whiteCount > 0) {
-            placePiece("white", id)
+        const position = parseInt(id.split("-")[1])
 
-            if(check3("white", id))
-                removePiece("black")
+        // check for remove enemy condition and remove piece
+        if(removeWhite) {
+            console.log("white remove")
+            if(whitePosition.includes(position)) {
+                document.getElementById(id).className = "board-slot-default"
+                whitePosition.splice(whitePosition.indexOf(position), 1)
+                setRemoveWhite(false)
+                changeTurn(turn + 1)
+                return
+            } else {
+                return
+            }
+        }
+
+        if(removeBlack) {
+            console.log("black remove")
+            if(blackPosition.includes(position)) {
+                document.getElementById(id).className = "board-slot-default"
+                blackPosition.splice(blackPosition.indexOf(position), 1)
+               setRemoveBlack(false)
+               changeTurn(turn + 1)
+               return
+            } else {
+                return
+            }
+        }
+
+        if((turn&1) === 0 && whiteCount > 0) {
+            if(!placePiece("white", id))
+                return
+
+            if(!check3("white", id))
+                changeTurn(turn + 1)
         }
         else if((turn&1) === 1 && blackCount > 0) {
-            placePiece("black", id)
+            if(!placePiece("black", id))
+                return
             
-            if(check3("black", id))
-                removePiece("white")
+            if(!check3("black", id))
+                changeTurn(turn + 1)
         }
         else {
             // move chip logic
+
         }
     }
 
+    // place pieces turn by turn
     const placePiece = (color, elementId) => {
         const position = parseInt(elementId.split("-")[1])
 
@@ -37,7 +72,10 @@ const Board = () => {
                 whitePosition.push(position)
                 decWhiteCount(whiteCount - 1)
 
-                changeTurn(turn + 1)
+                return true
+            }
+            else {
+                return false
             }
         }
         else {
@@ -47,11 +85,15 @@ const Board = () => {
                 blackPosition.push(position)
                 decBlackCount(blackCount - 1)
 
-                changeTurn(turn + 1)
+                return true
+            }
+            else {
+                return false
             }
         }
     }
 
+    // check if line of 3 is formed
     const check3 = (color, elementId) => {
         const position = parseInt(elementId.split("-")[1])
         if(color === "white") {
@@ -59,6 +101,7 @@ const Board = () => {
                 if(whitePosition.includes(position) &&
                     ((whitePosition.includes((position-1) % 8 === 0 ? (position-1)+ 8 : position-1) && whitePosition.includes(position+1))
                     || (whitePosition.includes(position+8) && whitePosition.includes(position-8)))) {
+                        setRemoveBlack(true)
                         return true
                 }
             }
@@ -66,6 +109,7 @@ const Board = () => {
                 if(whitePosition.includes(position) &&
                     ((whitePosition.includes(position+1) && whitePosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
                     || (whitePosition.includes(position+8) && whitePosition.includes(position+16)))) {
+                        setRemoveBlack(true)
                         return true
                 }
             }
@@ -73,12 +117,14 @@ const Board = () => {
                 if(whitePosition.includes(position) &&
                     ((whitePosition.includes(position+1) && whitePosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
                     || (whitePosition.includes(position-8) && whitePosition.includes(position-16)))) {
+                        setRemoveBlack(true)
                         return true
                 }
             }
             else {
                 if((whitePosition.includes(position) && whitePosition.includes(position+1 > (Math.floor((position+1)/9 + 1) * 8) ? position-7 : position+1) && whitePosition.includes(position+2 > (Math.floor((position+2)/9 + 1) * 8) ? position-6 : position+2))
                     || (whitePosition.includes(position) && whitePosition.includes(position-1) && whitePosition.includes((position-2) % 8 === 0 ? (position-2) + 8 : position-2))) {
+                        setRemoveBlack(true)
                         return true
                 }
             }
@@ -88,6 +134,7 @@ const Board = () => {
                 if(blackPosition.includes(position) &&
                     ((blackPosition.includes((position-1) % 8 === 0 ? (position-1)+ 8 : position-1) && blackPosition.includes(position+1))
                     || (blackPosition.includes(position+8) && blackPosition.includes(position-8)))) {
+                        setRemoveWhite(true)
                         return true
                 }
             }
@@ -95,6 +142,7 @@ const Board = () => {
                 if(blackPosition.includes(position) &&
                     ((blackPosition.includes(position+1) && blackPosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
                     || (blackPosition.includes(position+8) && blackPosition.includes(position+16)))) {
+                        setRemoveWhite(true)
                         return true
                 }
             }
@@ -102,22 +150,20 @@ const Board = () => {
                 if(blackPosition.includes(position) &&
                     ((blackPosition.includes(position+1) && blackPosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
                     || (blackPosition.includes(position-8) && blackPosition.includes(position-16)))) {
+                        setRemoveWhite(true)
                         return true
                 }
             }
             else {
                 if((blackPosition.includes(position) && blackPosition.includes(position+1 > (Math.floor((position+1)/9 + 1) * 8) ? position-7 : position+1) && blackPosition.includes(position+2 > (Math.floor((position+2)/9 + 1) * 8) ? position-6 : position+2))
                     || (blackPosition.includes(position) && blackPosition.includes(position-1) && blackPosition.includes((position-2) % 8 === 0 ? (position-2) + 8 : position-2))) {
+                        setRemoveWhite(true)
                         return true
                 }
             }
         }
 
         return false
-    }
-
-    const removePiece = (color) => {
-        // remove piece logic
     }
 
     return (
