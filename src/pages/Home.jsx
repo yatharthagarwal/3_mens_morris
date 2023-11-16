@@ -21,7 +21,7 @@ const Home = () => {
               </span>{' '}
               Manual
             </Navbar.Brand>
-            <Navbar.Brand className='nav-brand' href="board">
+            <Navbar.Brand className='nav-brand' href="arena">
               <img
                 alt=""
                 src='../../assets/play-icon.png'
