@@ -1,0 +1,15 @@
+.arena {
+    background-image: url('../public/assets/canvas.jpg');
+}
+
+.player,
+.board-area {
+    border: 2px solid black;
+    font-family: "Oswald";
+    font-size: 25px;
+    padding: 5px;
+}
+
+.timer {
+    display: inline;
+}
