@@ -1,5 +1,6 @@
 .arena {
     background-image: url('../public/assets/canvas.jpg');
+    padding: 40px;
 }
 
 .player,
@@ -8,8 +9,19 @@
     font-family: "Oswald";
     font-size: 25px;
     padding: 5px;
+    /* text-align: right; */
 }
 
-.timer {
-    display: inline;
+.player>.player-label {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.comps {
+    margin-top: 40px;
+}
+
+.player {
+    display: flex;
+    justify-content: flex-end;
 }

@@ -1,21 +1,37 @@
+import React from 'react';
 import Board from "./Board";
 import CountdownTimer from "./CountdownTimer/CountdownTimer"
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import GameConfiguration from './game-config';
 
-const Arena = () => {
+const Arena = (props) => {
+    const [modalShow, setModalShow] = React.useState(false);
     return (
         <div className="arena">
-            <div className="player">
-                Player 1
-                <CountdownTimer className='timer'
-                CountdownTimestampMs={1709999999999}/>
+            <div>
+                <Button variant="primary" onClick={() => setModalShow(true)}>
+                    Configure Game Settings
+                </Button>
+                <GameConfiguration
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                />
             </div>
-            <div className="board-area">
-                <Board />
-            </div>
-            <div className="player">
-                Player 2
-                <CountdownTimer className='timer'
-                CountdownTimestampMs={1709999999999}/>
+            <div className="comps">
+                <div className="player">
+                    <p className="player-label">Player 1</p>
+                    <CountdownTimer className='timer'
+                    CountdownTimestampMs={1709999999999}/>
+                </div>
+                <div className="board-area">
+                    <Board />
+                </div>
+                <div className="player">
+                    <p className="player-label">Player 2</p>
+                    <CountdownTimer className='timer'
+                    CountdownTimestampMs={1709999999999}/>
+                </div>
             </div>
         </div>
     )
