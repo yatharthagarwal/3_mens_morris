@@ -1,0 +1,10 @@
+.timer-selection {
+    border: 1px solid black;
+    font-family: "Oswald";
+    font-size: 25px;
+    padding: 5px;
+}
+
+#timer-label {
+    background-color: rgb(219, 157, 14);
+}
