@@ -5,17 +5,37 @@
 
 .player,
 .board-area {
-    border: 2px solid black;
+    /* border: 2px solid black; */
     font-family: "Oswald";
-    font-size: 25px;
+    font-size: 50px;
     padding: 5px;
     /* text-align: right; */
 }
 
-.player>.player-label {
+.board-area {
+    background-color: #C6BEC2;
+    border-radius: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.player {
+    background-color: #008080;
+    border-radius: 15px;
+}
+
+.player-label-black {
+    color: black;
+}
+
+.player-label-white {
+    color: white;
+}
+
+/* .player>.player-label {
     display: flex;
     justify-content: flex-start;
-}
+} */
 
 .comps {
     margin-top: 40px;
