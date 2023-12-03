@@ -133,7 +133,7 @@ const Arena = () => {
                             <Counter counter={whiteCount} />
                         </Col>
                         <Col>
-                            <p className="player-label-white">White</p>
+                            <p className="player-label-white"><b>White</b></p>
                         </Col>
                         <Col>
                             <ButtonGroup size="sm">
@@ -198,7 +198,7 @@ const Arena = () => {
                                 <Counter counter={blackCount} />
                             </Col>
                             <Col>
-                                <p className="player-label-black">Black</p>
+                                <p className="player-label-black"><b>Black</b></p>
                             </Col>
                             <Col>
                                 <ButtonGroup size="sm">
