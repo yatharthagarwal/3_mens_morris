@@ -19,27 +19,11 @@ const Arena = () => {
     const [myCountDownTimer1, setmyCountDownTimer1] = useState(new CountDownTimer());
     const [myCountDownTimer2, setmyCountDownTimer2] = useState(new CountDownTimer());
 
-    // let myCountDownTimer1, myCountDownTimer2;
-    // useEffect(() => {
-    //     myCountDownTimer1 = new CountDownTimer();
-    //     myCountDownTimer2 = new CountDownTimer();
-    // }, []);
-
     function settimevalue(val) {
         setPlayerOneTimer(val * 60000)
         setPlayerTwoTimer(val * 60000)
     }
 
-    // let myCountDownTimer1, myCountDownTimer2;
-    // useEffect(() => {
-    //     myCountDownTimer1 = new CountDownTimer();
-    //     myCountDownTimer2 = new CountDownTimer();
-    // }, []);
-
-    function settimevalue(val) {
-        setPlayerOneTimer(val * 60000)
-        setPlayerTwoTimer(val * 60000)
-    }
     return (
         <div className="arena">
             <div>
