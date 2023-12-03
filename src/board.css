@@ -36,6 +36,16 @@
   background-color: #000000;
 }
 
+.board-slot-green-shadow {
+  opacity: 0.7;
+  box-shadow: 0 0 10px green;
+}
+
+.board-slot-red-shadow {
+  opacity: 0.7;
+  box-shadow: 0 0 10px red;
+}
+
 #slot-1 {
   position: absolute;
   left: calc(50% - 10px);
