@@ -2,10 +2,10 @@ import { React, useState } from 'react'
 
 // remove piece highlight
 
-const Board = ({ changeTurn, turn }) => {
+const Board = ({ changeTurn, turn, decWhiteCount, decBlackCount, whiteCount, blackCount }) => {
     // const [turn, changeTurn] = useState(0)
-    const [whiteCount, decWhiteCount] = useState(9)
-    const [blackCount, decBlackCount] = useState(9)
+    // const [whiteCount, decWhiteCount] = useState(9)
+    // const [blackCount, decBlackCount] = useState(9)
     const [whitePosition, setWhitePosition] = useState([])
     const [blackPosition, setBlackPosition] = useState([])
     const [removeBlack, setRemoveBlack] = useState(false)
@@ -14,7 +14,6 @@ const Board = ({ changeTurn, turn }) => {
     const [moveWhite, setMoveWhite] = useState(-1)
     const [blackMoves, setBlackMoves] = useState([])
     const [whiteMoves, setWhiteMoves] = useState([])
-    // let turn = 0;
 
     const orchestrator = (event) => {
         const id = event.currentTarget.id

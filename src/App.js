@@ -8,7 +8,8 @@ import GameConfiguration from './pages/game-config'
 import TimerSelection from './pages/timer-selection'
 import Header from './pages/Header'
 import Footer from './pages/Footer'
-import { Navbar } from 'react-bootstrap'
+import { Navbar } from 'react-bootstrap';
+import 'animate.css';
 
 function App() {
   return (

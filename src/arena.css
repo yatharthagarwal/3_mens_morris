@@ -7,8 +7,8 @@
 .board-area {
     /* border: 2px solid black; */
     font-family: "Oswald";
-    font-size: 50px;
-    padding: 5px;
+    font-size: 30px;
+    /* padding: 5px; */
     /* text-align: right; */
 }
 
@@ -19,8 +19,11 @@
     margin-bottom: 10px;
 }
 
-.player {
-    background-color: #008080;
+.timer {
+    /* background-color: #008080; */
+    background-image: url('../public/assets/card.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     border-radius: 15px;
 }
 
@@ -37,11 +40,11 @@
     justify-content: flex-start;
 } */
 
-.comps {
+/* .comps {
     margin-top: 40px;
-}
+} */
 
-.player {
+/* .player {
     display: flex;
     justify-content: flex-end;
-}
+} */
