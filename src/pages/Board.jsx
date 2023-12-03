@@ -2,244 +2,34 @@ import { React, useState } from 'react'
 
 // remove piece highlight
 
-const Board = () => {
-    const [turn, changeTurn] = useState(0)
-    const [whiteCount, decWhiteCount] = useState(9)
-    const [blackCount, decBlackCount] = useState(9)
-    const [whitePosition, setWhitePosition] = useState([])
-    const [blackPosition, setBlackPosition] = useState([])
-    const [removeBlack, setRemoveBlack] = useState(false)
-    const [removeWhite, setRemoveWhite] = useState(false)
-    const [moveBlack, setMoveBlack] = useState(-1)
-    const [moveWhite, setMoveWhite] = useState(-1)
-    const [blackMoves, setBlackMoves] = useState([])
-    const [whiteMoves, setWhiteMoves] = useState([])
+const Board = ({ changeTurn, turn, setWhiteCount, whiteCount, setBlackCount, blackCount, setWin, pausePlayerOne, pausePlayerTwo }) => {
+    const [currWhitePosition, setcurrWhitePosition] = useState([])
+    const [currBlackPosition, setcurrBlackPosition] = useState([])
+    const [isRemoveBlack, setRemoveBlack] = useState(false)
+    const [isRemoveWhite, setRemoveWhite] = useState(false)
+    const [selectMoveBlack, setMoveBlack] = useState(-1)
+    const [selectMoveWhite, setMoveWhite] = useState(-1)
+    const [validBlackMoves, setValidBlackMoves] = useState([])
+    const [validWhiteMoves, setValidWhiteMoves] = useState([])
 
     const orchestrator = (event) => {
         const id = event.currentTarget.id
 
         const position = parseInt(id.split("-")[1])
 
-        // move piece logic
-        if(moveBlack !== -1 && blackMoves.includes(position)) {
-            if(!placePiece("black", id))
-                return
-
-            document.getElementById(`slot-${moveBlack}`).className = "board-slot-default"
-            blackPosition.splice(blackPosition.indexOf(moveBlack), 1)
-            decBlackCount(0)
-
-            if((moveBlack&1) === 0) {
-                // front
-                document.getElementById(`line-${moveBlack}-${(moveBlack % 8 === 0 ? moveBlack-7 : moveBlack+1)}`).className = "line-default"
-                document.getElementById(`line-${(moveBlack % 8 === 0 ? moveBlack-7 : moveBlack+1)}-${(moveBlack % 8 === 0 ? moveBlack-6 : moveBlack+2)}`).className = "line-default"
-
-                // back
-                document.getElementById(`line-${(moveBlack-1)}-${moveBlack}`).className = "line-default"
-                document.getElementById(`line-${((moveBlack-2) % 8 === 0 ? moveBlack+6 : moveBlack-2)}-${moveBlack-1}`).className = "line-default"
-            }
-            else if((moveBlack-1) / 8 >= 1 && (moveBlack-1) / 8 < 2) {
-                // left
-                document.getElementById(`line-${((moveBlack-1) % 8 === 0 ? moveBlack+7 : moveBlack-1)}-${moveBlack}`).className = "line-default"
-                
-                // right
-                document.getElementById(`line-${moveBlack}-${moveBlack+1}`).className = "line-default"
-                
-                // bottom
-                document.getElementById(`line-${moveBlack-8}-${moveBlack}`).className = "line-default"
-                
-                // top
-                document.getElementById(`line-${moveBlack}-${moveBlack+8}`).className = "line-default"
-            }
-            else {
-                if(moveBlack < 8) {
-                    // 2 top
-                    document.getElementById(`line-${moveBlack}-${moveBlack+8}`).className = "line-default"
-                    document.getElementById(`line-${moveBlack+8}-${moveBlack+16}`).className = "line-default"
-                }
-                else {
-                    // 2 bottom
-                    document.getElementById(`line-${moveBlack-8}-${moveBlack}`).className = "line-default"
-                    document.getElementById(`line-${moveBlack-16}-${moveBlack-8}`).className = "line-default"
-                }
-
-                // left
-                document.getElementById(`line-${((moveBlack-1) % 8 === 0 ? moveBlack+7 : moveBlack-1)}-${moveBlack}`).className = "line-default"
-                
-                // right
-                document.getElementById(`line-${moveBlack}-${moveBlack+1}`).className = "line-default"
-            }
-
-            if(!check3("black", id))
-                changeTurn(turn+1)
-
-            setMoveBlack(-1)
+        if(pausePlayerOne || pausePlayerTwo)
             return
-        }
-        else if(moveWhite !== -1 && whiteMoves.includes(position)) {
-            if(!placePiece("white", id))
-                return
 
-            document.getElementById(`slot-${moveWhite}`).className = "board-slot-default"
-            whitePosition.splice(whitePosition.indexOf(moveWhite), 1)
-            decWhiteCount(0)
+        // check whether game finished
+        isGameOver()
 
-            if((moveWhite&1) === 0) {
-                // front
-                document.getElementById(`line-${moveWhite}-${(moveWhite % 8 === 0 ? moveWhite-7 : moveWhite+1)}`).className = "line-default"
-                document.getElementById(`line-${(moveWhite % 8 === 0 ? moveWhite-7 : moveWhite+1)}-${(moveWhite % 8 === 0 ? moveWhite-6 : moveWhite+2)}`).className = "line-default"
-
-                // back
-                document.getElementById(`line-${(moveWhite-1)}-${moveWhite}`).className = "line-default"
-                document.getElementById(`line-${((moveWhite-2) % 8 === 0 ? moveWhite+6 : moveWhite-2)}-${moveWhite-1}`).className = "line-default"
-            }
-            else if((moveWhite-1) / 8 >= 1 && (moveWhite-1) / 8 < 2) {
-                // left
-                document.getElementById(`line-${((moveWhite-1) % 8 === 0 ? moveWhite+7 : moveWhite-1)}-${moveWhite}`).className = "line-default"
-                
-                // right
-                document.getElementById(`line-${moveWhite}-${moveWhite+1}`).className = "line-default"
-                
-                // bottom
-                document.getElementById(`line-${moveWhite-8}-${moveWhite}`).className = "line-default"
-                
-                // top
-                document.getElementById(`line-${moveWhite}-${moveWhite+8}`).className = "line-default"
-            }
-            else {
-                if(moveWhite < 8) {
-                    // 2 top
-                    document.getElementById(`line-${moveWhite}-${moveWhite+8}`).className = "line-default"
-                    document.getElementById(`line-${moveWhite+8}-${moveWhite+16}`).className = "line-default"
-                }
-                else {
-                    // 2 bottom
-                    document.getElementById(`line-${moveWhite-8}-${moveWhite}`).className = "line-default"
-                    document.getElementById(`line-${moveWhite-16}-${moveWhite-8}`).className = "line-default"
-                }
-
-                // left
-                document.getElementById(`line-${((moveWhite-1) % 8 === 0 ? moveWhite+7 : moveWhite-1)}-${moveWhite}`).className = "line-default"
-                
-                // right
-                document.getElementById(`line-${moveWhite}-${moveWhite+1}`).className = "line-default"
-            }
-
-            if(!check3("white", id))
-                changeTurn(turn+1)
-
-            setMoveWhite(-1)
+        // move piece to desired slot
+        if(movePiece(id))
             return
-        }
 
-        // check for remove enemy condition and remove piece
-        if(removeWhite) {
-            console.log("white remove")
-            if(whitePosition.includes(position)) {
-                document.getElementById(id).className = "board-slot-default"
-                whitePosition.splice(whitePosition.indexOf(position), 1)
-
-                if((position&1) === 0) {
-                    // front
-                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position-7 : position+1)}`).className = "line-default"
-                    document.getElementById(`line-${(position % 8 === 0 ? position-7 : position+1)}-${(position % 8 === 0 ? position-6 : position+2)}`).className = "line-default"
-    
-                    // back
-                    document.getElementById(`line-${(position-1)}-${position}`).className = "line-default"
-                    document.getElementById(`line-${((position-2) % 8 === 0 ? position+6 : position-2)}-${position-1}`).className = "line-default"
-                }
-                else if((position-1) / 8 >= 1 && (position-1) / 8 < 2) {
-                    // left
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-default"
-                    
-                    // right
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-default"
-                    
-                    // bottom
-                    document.getElementById(`line-${position-8}-${position}`).className = "line-default"
-                    
-                    // top
-                    document.getElementById(`line-${position}-${position+8}`).className = "line-default"
-                }
-                else {
-                    if(position < 8) {
-                        // 2 top
-                        document.getElementById(`line-${position}-${position+8}`).className = "line-default"
-                        document.getElementById(`line-${position+8}-${position+16}`).className = "line-default"
-                    }
-                    else {
-                        // 2 bottom
-                        document.getElementById(`line-${position-8}-${position}`).className = "line-default"
-                        document.getElementById(`line-${position-16}-${position-8}`).className = "line-default"
-                    }
-    
-                    // left
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-default"
-                    
-                    // right
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-default"
-                }
-
-                setRemoveWhite(false)
-                changeTurn(turn + 1)
-            }
+        // remove enemy piece
+        if(removePiece(id))
             return
-        }
-
-        if(removeBlack) {
-            console.log("black remove", position)
-            if(blackPosition.includes(position)) {
-                document.getElementById(id).className = "board-slot-default"
-                blackPosition.splice(blackPosition.indexOf(position), 1)
-
-                if((position&1) === 0) {
-                    // front
-                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position-7 : position+1)}`).className = "line-default"
-                    document.getElementById(`line-${(position % 8 === 0 ? position-7 : position+1)}-${(position % 8 === 0 ? position-6 : position+2)}`).className = "line-default"
-    
-                    // back
-                    document.getElementById(`line-${(position-1)}-${position}`).className = "line-default"
-                    document.getElementById(`line-${((position-2) % 8 === 0 ? position+6 : position-2)}-${position-1}`).className = "line-default"
-                }
-                else if((position-1)/8 >= 1 && (position-1)/8 < 2) {
-                    console.log("hi")
-                    // left
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-default"
-                    
-                    // right
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-default"
-                    
-                    // // bottom
-                    document.getElementById(`line-${position-8}-${position}`).className = "line-default"
-                    
-                    // // top
-                    document.getElementById(`line-${position}-${position+8}`).className = "line-default"
-                }
-                else {
-                    if(position < 8) {
-                        // 2 top
-                        console.log("wow")
-                        document.getElementById(`line-${position}-${position+8}`).className = "line-default"
-                        document.getElementById(`line-${position+8}-${position+16}`).className = "line-default"
-                    }
-                    else {
-                        // 2 bottom
-                        document.getElementById(`line-${position-8}-${position}`).className = "line-default"
-                        document.getElementById(`line-${position-16}-${position-8}`).className = "line-default"
-                    }
-    
-                    // left
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-default"
-                    
-                    // right
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-default"
-                }
-
-               setRemoveBlack(false)
-               changeTurn(turn + 1)
-            }
-            return
-        }
 
         if((turn&1) === 0 && whiteCount > 0) {
             if(!placePiece("white", id))
@@ -257,239 +47,157 @@ const Board = () => {
         }
         else {
             // move chip logic
-            if((position&1) === 0) {
-                if((turn&1) === 0) {
-                    if(whitePosition.includes(position)) {
-                        setWhiteMoves([((position-1) % 8 === 0 ? position+7 : position-1), (position % 8 === 0 ? position-7 : position+1)])
-                        setMoveWhite(position)
-                        setMoveBlack(-1)
-                    }
-                }
-                else {
-                    if(blackPosition.includes(position)) {
-                        setBlackMoves([((position-1) % 8 === 0 ? position+7 : position-1), (position % 8 === 0 ? position-7 : position+1)])
-                        setMoveWhite(-1)
-                        setMoveBlack(position)
-                    }
-                }
-            }
-            else if((position-1) / 8 >= 1 && (position-1) / 8 < 2) {
-                if((turn&1) === 0) {
-                    if(whitePosition.includes(position)) {
-                        setWhiteMoves([((position-1) % 8 === 0 ? position+7 : position-1), position+1, position-8, position+8])
-                        setMoveWhite(position)
-                        setMoveBlack(-1)
-                    }
-                }
-                else {
-                    if(blackPosition.includes(position)) {
-                        setBlackMoves([((position-1) % 8 === 0 ? position+7 : position-1), position+1, position-8, position+8])
-                        setMoveWhite(-1)
-                        setMoveBlack(position)
-                    }
-                }
-            }
-            else {
-                if((turn&1) === 0) {
-                    if(whitePosition.includes(position)) {
-                        setWhiteMoves([(position < 8 ? position+8 : position-8), position+1, position-1])
-                        setMoveWhite(position)
-                        setMoveBlack(-1)
-                    }
-                }
-                else {
-                    if(blackPosition.includes(position)) {
-                        setBlackMoves([(position < 8 ? position+8 : position-8), position+1, position-1])
-                        setMoveWhite(-1)
-                        setMoveBlack(position)
-                    }
-                }
-            }
+            moveSelector(position)
         }
-        console.log("white", whitePosition, whiteCount, whiteMoves)
-        console.log("black", blackPosition, blackCount, blackMoves)
+    }
+
+    const getRing = (position) => {
+        if(position > 0 && position <= 8)
+            return 1
+
+        else if(position > 8 && position <= 16)
+            return 2
+
+        else if(position > 16 && position <= 24)
+            return 3
+
+        else
+            return -1
+    }
+
+    const getPrevchip = (position) => {
+        if((position-1) % 8 === 0)
+            return position+7
+
+        return position-1
+    }
+
+    const getNextchip = (position) => {
+        if(position % 8 === 0)
+            return position-7
+
+        return position+1
+    }
+
+    const getUpchip = (position) => {
+        if(position < 17)
+            return position+8
+
+        return -1
+    }
+
+    const getDownchip = (position) => {
+        if(position > 8)
+            return position-8
+
+        return -1
+    }
+
+    const changeCSS = (modify) => {
+        modify.forEach(element => {
+            document.getElementById(element.id).className = element.property
+        });
+    }
+
+    const clearChipDecoration = () => {
+        for(let i=1; i<=24; i++)
+            document.getElementById(`slot-${i}`).className = document.getElementById(`slot-${i}`).className.split(' ')[0]
+    }
+
+    const isGameOver = () => {
+        if(whiteCount === 0 && currWhitePosition.length < 3)
+            setWin(1)
+
+        if(blackCount === 0 && currBlackPosition.length < 3)
+            setWin(0)
     }
 
     // place pieces turn by turn
-    const placePiece = (color, elementId) => {
-        const position = parseInt(elementId.split("-")[1])
+    const placePiece = (color, id) => {
+        const position = parseInt(id.split("-")[1])
 
         if(color === "white") {
-            if(!(blackPosition.includes(position)) && !(whitePosition.includes(position))) {
-                document.getElementById(elementId).className = "board-slot-white"
-                // addWhitePosition([...whitePosition, position])
-                whitePosition.push(position)
-                decWhiteCount(whiteCount - 1)
+            if(!(currBlackPosition.includes(position)) && !(currWhitePosition.includes(position))) {
+                changeCSS([ {id, property: "board-slot-white"} ])
+                currWhitePosition.push(position)
+                setWhiteCount(whiteCount - 1)
 
                 return true
-            }
-            else {
-                return false
             }
         }
         else {
-            if(!(whitePosition.includes(position)) && !(blackPosition.includes(position))) {
-                document.getElementById(elementId).className = "board-slot-black"
-                // addBlackPosition(blackPosition => [...blackPosition, position])
-                blackPosition.push(position)
-                decBlackCount(blackCount - 1)
+            if(!(currWhitePosition.includes(position)) && !(currBlackPosition.includes(position))) {
+                changeCSS([ {id, property: "board-slot-black"} ])
+                currBlackPosition.push(position)
+                setBlackCount(blackCount - 1)
 
                 return true
             }
-            else {
-                return false
-            }
         }
+
+        return false
     }
 
     // check if line of 3 is formed
-    const check3 = (color, elementId) => {
-        const position = parseInt(elementId.split("-")[1])
-        // if(color === "white") {
-        //     if(position === 9 || position === 11 || position === 13 || position === 15) {
-        //         // if(whitePosition.includes(position) &&
-        //         //     ((whitePosition.includes((position-1) % 8 === 0 ? (position-1)+ 8 : position-1) && whitePosition.includes(position+1))
-        //         //     || (whitePosition.includes(position+8) && whitePosition.includes(position-8)))) {
-        //         //         setRemoveBlack(true)
-        //         //         return true
-        //         // }
-        //         if(whitePosition.includes((position-1) % 8 === 0 ? (position-1)+ 8 : position-1) && whitePosition.includes(position+1)) {
-        //             document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-        //             document.getElementById(`line-${position}-${position+1}`).className = "line-green"
-        //             setRemoveBlack(true)
-        //             return true
-        //         }
-        //         else if(whitePosition.includes(position+8) && whitePosition.includes(position-8)) {
-        //             document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-        //             document.getElementById(`line-${position}-${position+1}`).className = "line-green"
-        //             setRemoveBlack(true)
-        //             return true
-        //         }
-        //     }
-        //     else if(position === 1 || position === 3 || position === 5 || position === 7) {
-        //         // if(whitePosition.includes(position) &&
-        //         //     ((whitePosition.includes(position+1) && whitePosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
-        //         //     || (whitePosition.includes(position+8) && whitePosition.includes(position+16)))) {
-        //         //         setRemoveBlack(true)
-        //         //         return true
-        //         // }
-        //         if(whitePosition.includes(position+1) && whitePosition.includes((position-1) % 8 === 0 ? position+7 : position-1)) {
-        //             document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-        //             document.getElementById(`line-${position}-${position+1}`).className = "line-green"
-        //             setRemoveBlack(true)
-        //             return true
-        //         }
-        //         else if(whitePosition.includes(position+8) && whitePosition.includes(position+16)) {
-        //             document.getElementById(`line-${position}-${position+8}`).className = "line-green"
-        //             document.getElementById(`line-${position+8}-${position+16}`).className = "line-green"
-        //             setRemoveBlack(true)
-        //             return true
-        //         }
-        //     }
-        //     else if(position === 17 || position === 19 || position === 21 || position === 23) {
-        //         if(whitePosition.includes(position) &&
-        //             ((whitePosition.includes(position+1) && whitePosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
-        //             || (whitePosition.includes(position-8) && whitePosition.includes(position-16)))) {
-        //                 setRemoveBlack(true)
-        //                 return true
-        //         }
-        //     }
-        //     else {
-        //         if((whitePosition.includes(position) && whitePosition.includes(position+1 > (Math.floor((position+1)/9 + 1) * 8) ? position-7 : position+1) && whitePosition.includes(position+2 > (Math.floor((position+2)/9 + 1) * 8) ? position-6 : position+2))
-        //             || (whitePosition.includes(position) && whitePosition.includes(position-1) && whitePosition.includes((position-2) % 8 === 0 ? (position-2) + 8 : position-2))) {
-        //                 setRemoveBlack(true)
-        //                 return true
-        //         }
-        //     }
-        // }
-        // else {
-        //     if(position === 9 || position === 11 || position === 13 || position === 15) {
-        //         if(blackPosition.includes(position) &&
-        //             ((blackPosition.includes((position-1) % 8 === 0 ? (position-1)+ 8 : position-1) && blackPosition.includes(position+1))
-        //             || (blackPosition.includes(position+8) && blackPosition.includes(position-8)))) {
-        //                 setRemoveWhite(true)
-        //                 return true
-        //         }
-        //     }
-        //     else if(position === 1 || position === 3 || position === 5 || position === 7) {
-        //         if(blackPosition.includes(position) &&
-        //             ((blackPosition.includes(position+1) && blackPosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
-        //             || (blackPosition.includes(position+8) && blackPosition.includes(position+16)))) {
-        //                 setRemoveWhite(true)
-        //                 return true
-        //         }
-        //     }
-        //     else if(position === 17 || position === 19 || position === 21 || position === 23) {
-        //         if(blackPosition.includes(position) &&
-        //             ((blackPosition.includes(position+1) && blackPosition.includes((position-1) % 8 === 0 ? position+7 : position-1))
-        //             || (blackPosition.includes(position-8) && blackPosition.includes(position-16)))) {
-        //                 setRemoveWhite(true)
-        //                 return true
-        //         }
-        //     }
-        //     else {
-        //         if((blackPosition.includes(position) && blackPosition.includes(position+1 > (Math.floor((position+1)/9 + 1) * 8) ? position-7 : position+1) && blackPosition.includes(position+2 > (Math.floor((position+2)/9 + 1) * 8) ? position-6 : position+2))
-        //             || (blackPosition.includes(position) && blackPosition.includes(position-1) && blackPosition.includes((position-2) % 8 === 0 ? (position-2) + 8 : position-2))) {
-        //                 setRemoveWhite(true)
-        //                 return true
-        //         }
-        //     }
-        // }
+    const check3 = (color, id) => {
+        const position = parseInt(id.split("-")[1])
         let ret = false
+
+        let changeList = []
+
         if(color === "white") {
             if((position&1) === 0) {
-                if(whitePosition.includes(position % 8 === 0 ? position-7 : position+1) && whitePosition.includes((position % 8 === 0 ? position-6 : position+2))) {
+                if(currWhitePosition.includes(getNextchip(position)) && currWhitePosition.includes(getNextchip(getNextchip(position)))) {
                     // front
-                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position-7 : position+1)}`).className = "line-green"
-                    document.getElementById(`line-${(position % 8 === 0 ? position-7 : position+1)}-${(position % 8 === 0 ? position-6 : position+2)}`).className = "line-green"
+                    changeList.push({id: `line-${position}-${(getNextchip(position))}`, property: "line-green"})
+                    changeList.push({id: `line-${getNextchip(position)}-${getNextchip(getNextchip(position))}`, property: "line-green"})
                     setRemoveBlack(true)
                     ret = true
                 }
-                if(whitePosition.includes((position-2) % 8 === 0 ? position+6 : position-2) && whitePosition.includes(position-1)) {
+                if(currWhitePosition.includes(getPrevchip(position)) && currWhitePosition.includes(getPrevchip(getPrevchip(position)))) {
                     // back
-                    document.getElementById(`line-${position-1}-${position}`).className = "line-green"
-                    document.getElementById(`line-${((position-2) % 8 === 0 ? position+6 : position-2)}-${position-1}`).className = "line-green"
+                    changeList.push({id: `line-${getPrevchip(position)}-${position}`, property: "line-green"})
+                    changeList.push({id: `line-${getPrevchip(getPrevchip(position))}-${getPrevchip(position)}`, property: "line-green"})
                     setRemoveBlack(true)
                     ret = true
                 }
             }
-            else if((position-1) / 8 >= 1 && (position-1) / 8 < 2) {
-                ret = false
-                if(whitePosition.includes(position-1) && whitePosition.includes(position+1)) {
+            else if(getRing(position) === 2) {
+                if(currWhitePosition.includes(getPrevchip(position)) && currWhitePosition.includes(getNextchip(position))) {
                     // left right
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-green"
+                    changeList.push({id: `line-${getPrevchip(position)}-${position}`, property: "line-green"})
+                    changeList.push({id: `line-${position}-${getNextchip(position)}`, property: "line-green"})
                     setRemoveBlack(true)
                     ret = true
                 }
-                if(whitePosition.includes(position-8) && whitePosition.includes(position+8)) {
+                if(currWhitePosition.includes(getDownchip(position)) && currWhitePosition.includes(getUpchip(position))) {
                     // bottom top
-                    document.getElementById(`line-${position-8}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+8}`).className = "line-green"
+                    changeList.push({id: `line-${getDownchip(position)}-${position}`, property: "line-green"})
+                    changeList.push({id: `line-${position}-${getUpchip(position)}`, property: "line-green"})
                     setRemoveBlack(true)
                     ret = true
                 }
             }
             else {
-                if(position < 8) {
-                    if(whitePosition.includes(position+8) && whitePosition.includes(position+16)) {
-                        document.getElementById(`line-${position}-${position+8}`).className = "line-green"
-                        document.getElementById(`line-${position+8}-${position+16}`).className = "line-green"
+                if(getRing(position) === 1) {
+                    if(currWhitePosition.includes(getUpchip(position)) && currWhitePosition.includes(getUpchip(getUpchip(position)))) {
+                        changeList.push({id: `line-${position}-${getUpchip(position)}`, property: "line-green"})
+                        changeList.push({id: `line-${getUpchip(position)}-${getUpchip(getUpchip(position))}`, property: "line-green"})
                         setRemoveBlack(true)
                         ret = true
                     }
                 }
-                else {
-                    if(whitePosition.includes(position-8) && whitePosition.includes(position-16)) {
-                        document.getElementById(`line-${position-8}-${position}`).className = "line-green"
-                        document.getElementById(`line-${position-16}-${position-8}`).className = "line-green"
+                else if(getRing(position) === 3){
+                    if(currWhitePosition.includes(getDownchip(position)) && currWhitePosition.includes(getDownchip(getDownchip(position)))) {
+                        changeList.push({id: `line-${getDownchip(position)}-${position}`, property: "line-green"})
+                        changeList.push({id: `line-${getDownchip(getDownchip(position))}-${getDownchip(position)}`, property: "line-green"})
                         setRemoveBlack(true)
                         ret = true
                     }
                 }
-                if(whitePosition.includes((position-1) % 8 === 0 ? position+7 : position-1) && whitePosition.includes(position+1)) {
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-green"
+                if(currWhitePosition.includes(getPrevchip(position)) && currWhitePosition.includes(getNextchip(position))) {
+                    changeList.push({id: `line-${getPrevchip(position)}-${position}`, property: "line-green"})
+                    changeList.push({id: `line-${position}-${getNextchip(position)}`, property: "line-green"})
                     setRemoveBlack(true)
                    ret = true
                 }
@@ -497,64 +205,556 @@ const Board = () => {
         }
         else {
             if((position&1) === 0) {
-                if(blackPosition.includes(position % 8 === 0 ? position-7 : position+1) && blackPosition.includes((position % 8 === 0 ? position-6 : position+2))) {
+                if(currBlackPosition.includes(getNextchip(position)) && currBlackPosition.includes(getNextchip(getNextchip(position)))) {
                     // front
-                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position-7 : position+1)}`).className = "line-green"
-                    document.getElementById(`line-${(position % 8 === 0 ? position-7 : position+1)}-${(position % 8 === 0 ? position-6 : position+2)}`).className = "line-green"
+                    changeList.push({id: `line-${position}-${getNextchip(position)}`, property: "line-green"})
+                    changeList.push({id: `line-${getNextchip(position)}-${getNextchip(getNextchip(position))}`, property: "line-green"})
                     setRemoveWhite(true)
                     ret = true
                 }
-                if(blackPosition.includes((position-2) % 8 === 0 ? position+6 : position-2) && blackPosition.includes(position-1)) {
+                if(currBlackPosition.includes(getPrevchip(position)) && currBlackPosition.includes(getPrevchip(getPrevchip(position)))) {
                     // back
-                    document.getElementById(`line-${position-1}-${position}`).className = "line-green"
-                    document.getElementById(`line-${((position-2) % 8 === 0 ? position+6 : position-2)}-${position-1}`).className = "line-green"
+                    changeList.push({id: `line-${getPrevchip(position)}-${position}`, property: "line-green"})
+                    changeList.push({id: `line-${getPrevchip(getPrevchip(position))}-${getPrevchip(position)}`, property: "line-green"})
                     setRemoveWhite(true)
                     ret = true
                 }
             }
-            else if((position-1) / 8 >= 1 && (position-1) / 8 < 2) {
-                if(blackPosition.includes(position-1) && blackPosition.includes(position+1)) {
+            else if(getRing(position) === 2) {
+                if(currBlackPosition.includes(getPrevchip(position)) && currBlackPosition.includes(getNextchip(position))) {
                     // left right
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-green"
+                    changeList.push({id: `line-${getPrevchip(position)}-${position}`, property: "line-green"})
+                    changeList.push({id: `line-${position}-${getNextchip(position)}`, property: "line-green"})
                     setRemoveWhite(true)
                     ret = true
                 }
-                if(blackPosition.includes(position-8) && blackPosition.includes(position+8)) {
+                if(currBlackPosition.includes(getDownchip(position)) && currBlackPosition.includes(getUpchip(position))) {
                     // bottom top
-                    document.getElementById(`line-${position-8}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+8}`).className = "line-green"
+                    changeList.push({id: `line-${getDownchip(position)}-${position}`, property: "line-green"})
+                    changeList.push({id: `line-${position}-${getUpchip(position)}`, property: "line-green"})
                     setRemoveWhite(true)
                     ret = true
                 }
             }
             else {
-                if(position < 8) {
-                    if(blackPosition.includes(position+8) && blackPosition.includes(position+16)) {
-                        document.getElementById(`line-${position}-${position+8}`).className = "line-green"
-                        document.getElementById(`line-${position+8}-${position+16}`).className = "line-green"
+                if(getRing(position) === 1) {
+                    if(currBlackPosition.includes(getUpchip(position)) && currBlackPosition.includes(getUpchip(getUpchip(position)))) {
+                        changeList.push({id: `line-${position}-${getUpchip(position)}`, property: "line-green"})
+                        changeList.push({id: `line-${getUpchip(position)}-${getUpchip(getUpchip(position))}`, property: "line-green"})
                         setRemoveWhite(true)
                         ret = true
                     }
                 }
-                else {
-                    if(blackPosition.includes(position-8) && blackPosition.includes(position-16)) {
-                        document.getElementById(`line-${position-8}-${position}`).className = "line-green"
-                        document.getElementById(`line-${position-16}-${position-8}`).className = "line-green"
+                else if(getRing(position) === 3) {
+                    if(currBlackPosition.includes(getDownchip(position)) && currBlackPosition.includes(getDownchip(getDownchip(position)))) {
+                        changeList.push({id: `line-${getDownchip(position)}-${position}`, property: "line-green"})
+                        changeList.push({id: `line-${getDownchip(getDownchip(position))}-${getDownchip(position)}`, property: "line-green"})
                         setRemoveWhite(true)
                         ret = true
                     }
                 }
-                if(blackPosition.includes((position-1) % 8 === 0 ? position+7 : position-1) && blackPosition.includes(position+1)) {
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-green"
+                if(currBlackPosition.includes(getPrevchip(position)) && currBlackPosition.includes(getNextchip(position))) {
+                    changeList.push({id: `line-${getPrevchip(position)}-${position}`, property: "line-green"})
+                    changeList.push({id: `line-${position}-${getNextchip(position)}`, property: "line-green"})
                     setRemoveWhite(true)
                    ret = true
                 }
             }
         }
 
+        changeCSS(changeList)
+
         return ret
+    }
+
+    const moveSelector = (position) => {
+        let changeList = []
+
+        if((position&1) === 0) {
+            if((turn&1) === 0) {
+                if(currWhitePosition.includes(position)) {
+                    setValidWhiteMoves([getPrevchip(position), getNextchip(position)])
+    
+                    clearChipDecoration()
+
+                    if(!currBlackPosition.includes(getPrevchip(position)) && !currWhitePosition.includes(getPrevchip(position))) {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getNextchip(position)) && !currWhitePosition.includes(getNextchip(position))) {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+
+                    setMoveWhite(position)
+                    setMoveBlack(-1)
+                }
+            }
+            else {
+                if(currBlackPosition.includes(position)) {
+                    setValidBlackMoves([getPrevchip(position), getNextchip(position)])
+
+                    clearChipDecoration()
+
+                    if(!currBlackPosition.includes(getPrevchip(position)) && !currWhitePosition.includes(getPrevchip(position))) {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getNextchip(position)) && !currWhitePosition.includes(getNextchip(position))) {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+
+                    setMoveWhite(-1)
+                    setMoveBlack(position)
+                }
+            }
+        }
+        else if(getRing(position) === 2) {
+            if((turn&1) === 0) {
+                if(currWhitePosition.includes(position)) {
+                    setValidWhiteMoves([getPrevchip(position), getNextchip(position), getDownchip(position), getUpchip(position)])
+
+                    clearChipDecoration()
+
+                    if(!currBlackPosition.includes(getPrevchip(position)) && !currWhitePosition.includes(getPrevchip(position))) {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getNextchip(position)) && !currWhitePosition.includes(getNextchip(position))) {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getDownchip(position)) && !currWhitePosition.includes(getDownchip(position))) {
+                        changeList.push({ id: `slot-${getDownchip(position)}`, property: document.getElementById(`slot-${getDownchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getDownchip(position)}`, property: document.getElementById(`slot-${getDownchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getUpchip(position)) && !currWhitePosition.includes(getUpchip(position))) {
+                        changeList.push({ id: `slot-${getUpchip(position)}`, property: document.getElementById(`slot-${getUpchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getUpchip(position)}`, property: document.getElementById(`slot-${getUpchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+
+                    setMoveWhite(position)
+                    setMoveBlack(-1)
+                }
+            }
+            else {
+                if(currBlackPosition.includes(position)) {
+                    setValidBlackMoves([getPrevchip(position), getNextchip(position), getDownchip(position), getUpchip(position)])
+
+                    clearChipDecoration()
+
+                    if(!currBlackPosition.includes(getPrevchip(position)) && !currWhitePosition.includes(getPrevchip(position))) {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getNextchip(position)) && !currWhitePosition.includes(getNextchip(position))) {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getDownchip(position)) && !currWhitePosition.includes(getDownchip(position))) {
+                        changeList.push({ id: `slot-${getDownchip(position)}`, property: document.getElementById(`slot-${getDownchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getDownchip(position)}`, property: document.getElementById(`slot-${getDownchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getUpchip(position)) && !currWhitePosition.includes(getUpchip(position))) {
+                        changeList.push({ id: `slot-${getUpchip(position)}`, property: document.getElementById(`slot-${getUpchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getUpchip(position)}`, property: document.getElementById(`slot-${getUpchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+
+                    setMoveWhite(-1)
+                    setMoveBlack(position)
+                }
+            }
+        }
+        else {
+            if((turn&1) === 0) {
+                if(currWhitePosition.includes(position)) {
+                    setValidWhiteMoves([(position < 8 ? getUpchip(position) : getDownchip(position)), getNextchip(position), getPrevchip(position)])
+
+                    clearChipDecoration()
+
+                    if(!currBlackPosition.includes(position < 8 ? getUpchip(position) : getDownchip(position)) && !currWhitePosition.includes(position < 8 ? getUpchip(position) : getDownchip(position))) {
+                        changeList.push({ id: `slot-${(position < 8 ? getUpchip(position) : getDownchip(position))}`, property: document.getElementById(`slot-${(position < 8 ? getUpchip(position) : getDownchip(position))}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${(position < 8 ? getUpchip(position) : getDownchip(position))}`, property: document.getElementById(`slot-${(position < 8 ? getUpchip(position) : getDownchip(position))}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getNextchip(position)) && !currWhitePosition.includes(getNextchip(position))) {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getPrevchip(position)) && !currWhitePosition.includes(getPrevchip(position))) {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+
+                    setMoveWhite(position)
+                    setMoveBlack(-1)
+                }
+            }
+            else {
+                if(currBlackPosition.includes(position)) {
+                    setValidBlackMoves([(position < 8 ? getUpchip(position) : getDownchip(position)), getNextchip(position), getPrevchip(position)])
+
+                    clearChipDecoration()
+
+                    if(!currBlackPosition.includes(position < 8 ? getUpchip(position) : getDownchip(position)) && !currWhitePosition.includes(position < 8 ? getUpchip(position) : getDownchip(position))) {
+                        changeList.push({ id: `slot-${(position < 8 ? getUpchip(position) : getDownchip(position))}`, property: document.getElementById(`slot-${(position < 8 ? getUpchip(position) : getDownchip(position))}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${(position < 8 ? getUpchip(position) : getDownchip(position))}`, property: document.getElementById(`slot-${(position < 8 ? getUpchip(position) : getDownchip(position))}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getNextchip(position)) && !currWhitePosition.includes(getNextchip(position))) {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getNextchip(position)}`, property: document.getElementById(`slot-${getNextchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+                    if(!currBlackPosition.includes(getPrevchip(position)) && !currWhitePosition.includes(getPrevchip(position))) {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-green-shadow' })
+                    }
+                    else {
+                        changeList.push({ id: `slot-${getPrevchip(position)}`, property: document.getElementById(`slot-${getPrevchip(position)}`).className+' board-slot-red-shadow' })
+                    }
+
+                    setMoveWhite(-1)
+                    setMoveBlack(position)
+                }
+            }
+        }
+
+        changeCSS(changeList)
+    }
+
+    const movePiece = (id) => {
+        const position = parseInt(id.split('-')[1])
+        let changeList = []
+
+        // move piece logic
+        if(selectMoveBlack !== -1 && validBlackMoves.includes(position) && document.getElementById(`slot-${position}`).className.split(' ')[0] === "board-slot-default") {
+            if(!placePiece("black", id))
+                return false
+
+            changeList.push({ id: `slot-${selectMoveBlack}`, property: "board-slot-default" })
+            currBlackPosition.splice(currBlackPosition.indexOf(selectMoveBlack), 1)
+            setBlackCount(0)
+
+            if((selectMoveBlack&1) === 0) {
+                // front
+                changeList.push({ id: `line-${selectMoveBlack}-${getNextchip(selectMoveBlack)}`, property: "line-default" })
+                changeList.push({ id: `line-${getNextchip(selectMoveBlack)}-${getNextchip(getNextchip(selectMoveBlack))}`, property: "line-default" })
+
+                // back
+                changeList.push({ id: `line-${getPrevchip(selectMoveBlack)}-${selectMoveBlack}`, property: "line-default" })
+                changeList.push({ id: `line-${getPrevchip(getPrevchip(selectMoveBlack))}-${getPrevchip(selectMoveBlack)}`, property: "line-default" })
+            }
+            else if(getRing(selectMoveBlack) === 2) {
+                // left
+                changeList.push({ id: `line-${getPrevchip(selectMoveBlack)}-${selectMoveBlack}`, property: "line-default" })
+
+                // right
+                changeList.push({ id: `line-${selectMoveBlack}-${getNextchip(selectMoveBlack)}`, property: "line-default" })
+                
+                // bottom
+                changeList.push({ id: `line-${getDownchip(selectMoveBlack)}-${selectMoveBlack}`, property: "line-default" })
+                
+                // top
+                changeList.push({ id: `line-${selectMoveBlack}-${getUpchip(selectMoveBlack)}`, property: "line-default" })
+            }
+            else {
+                if(getRing(selectMoveBlack) === 1) {
+                    // 2 top
+                    changeList.push({ id: `line-${selectMoveBlack}-${getUpchip(selectMoveBlack)}`, property: "line-default" })
+                    changeList.push({ id: `line-${getUpchip(selectMoveBlack)}-${getUpchip(getUpchip(selectMoveBlack))}`, property: "line-default" })
+                }
+                else if(getRing(selectMoveBlack) === 3) {
+                    // 2 bottom
+                    changeList.push({ id: `line-${getDownchip(selectMoveBlack)}-${selectMoveBlack}`, property: "line-default" })
+                    changeList.push({ id: `line-${getDownchip(getDownchip(selectMoveBlack))}-${getDownchip(selectMoveBlack)}`, property: "line-default" })
+                }
+
+                // left
+                changeList.push({ id: `line-${getPrevchip(selectMoveBlack)}-${selectMoveBlack}`, property: "line-default" })
+                
+                // right
+                changeList.push({ id: `line-${selectMoveBlack}-${getNextchip(selectMoveBlack)}`, property: "line-default" })
+            }
+
+            changeCSS(changeList)
+
+            if(!check3("black", id))
+                changeTurn(turn+1)
+
+            clearChipDecoration()
+
+            setMoveBlack(-1)
+            return true
+        }
+        else if(selectMoveWhite !== -1 && validWhiteMoves.includes(position) && document.getElementById(`slot-${position}`).className.split(' ')[0] === "board-slot-default") {
+            if(!placePiece("white", id))
+                return false
+
+            changeList.push({ id: `slot-${selectMoveWhite}`, property: "board-slot-default" })
+            currWhitePosition.splice(currWhitePosition.indexOf(selectMoveWhite), 1)
+            setWhiteCount(0)
+
+            if((selectMoveWhite&1) === 0) {
+                // front
+                changeList.push({ id: `line-${selectMoveWhite}-${getNextchip(selectMoveWhite)}`, property: "line-default" })
+                changeList.push({ id: `line-${getNextchip(selectMoveWhite)}-${getNextchip(getNextchip(selectMoveWhite))}`, property: "line-default" })
+
+                // back
+                changeList.push({ id: `line-${getPrevchip(selectMoveWhite)}-${selectMoveWhite}`, property: "line-default" })
+                changeList.push({ id: `line-${getPrevchip(getPrevchip(selectMoveWhite))}-${getPrevchip(selectMoveWhite)}`, property: "line-default" })
+            }
+            else if(getRing(selectMoveWhite) === 2) {
+                // left
+                changeList.push({ id: `line-${getPrevchip(selectMoveWhite)}-${selectMoveWhite}`, property: "line-default" })
+
+                // right
+                changeList.push({ id: `line-${selectMoveWhite}-${getNextchip(selectMoveWhite)}`, property: "line-default" })
+                
+                // bottom
+                changeList.push({ id: `line-${getDownchip(selectMoveWhite)}-${selectMoveWhite}`, property: "line-default" })
+                
+                // top
+                changeList.push({ id: `line-${selectMoveWhite}-${getUpchip(selectMoveWhite)}`, property: "line-default" })
+            }
+            else {
+                if(getRing(selectMoveWhite) === 1) {
+                    // 2 top
+                    changeList.push({ id: `line-${selectMoveWhite}-${getUpchip(selectMoveWhite)}`, property: "line-default" })
+                    changeList.push({ id: `line-${getUpchip(selectMoveWhite)}-${getUpchip(getUpchip(selectMoveWhite))}`, property: "line-default" })
+                }
+                else if(getRing(selectMoveWhite) === 3) {
+                    // 2 bottom
+                    changeList.push({ id: `line-${getDownchip(selectMoveWhite)}-${selectMoveWhite}`, property: "line-default" })
+                    changeList.push({ id: `line-${getDownchip(getDownchip(selectMoveWhite))}-${getDownchip(selectMoveWhite)}`, property: "line-default" })
+                }
+
+                // left
+                changeList.push({ id: `line-${getPrevchip(selectMoveWhite)}-${selectMoveWhite}`, property: "line-default" })
+                
+                // right
+                changeList.push({ id: `line-${selectMoveWhite}-${getNextchip(selectMoveWhite)}`, property: "line-default" })
+            }
+
+            changeCSS(changeList)
+
+            if(!check3("white", id))
+                changeTurn(turn+1)
+
+            clearChipDecoration()
+
+            setMoveWhite(-1)
+            return true
+        }
+    }
+
+    const checkPieces = () => {
+        let removablePieces = new Set()
+        let millPieces = new Set()
+
+        if(isRemoveBlack) {
+            for(let i=1; i<=24; i++) {
+                if((i&1) === 1 && currBlackPosition.includes(i) && currBlackPosition.includes(getPrevchip(i)) && currBlackPosition.includes(getNextchip(i))) {
+                    millPieces.add(i)
+                    millPieces.add(getPrevchip(i))
+                    millPieces.add(getNextchip(i))
+                }
+                if(i === 1 || i === 3 || i === 5 || i === 7) {
+                    if(currBlackPosition.includes(i) && currBlackPosition.includes(getUpchip(i)) && currBlackPosition.includes(getUpchip(getUpchip(i)))) {
+                        millPieces.add(i)
+                        millPieces.add(getUpchip(i))
+                        millPieces.add(getUpchip(getUpchip(i)))
+                    }
+                }
+            }
+
+            return [ [...currBlackPosition].filter(x => !millPieces.has(x)), [...millPieces] ]
+        }
+        else if(isRemoveWhite) {
+            for(let i=1; i<=24; i++) {
+                if((i&1) === 1 && currWhitePosition.includes(i) && currWhitePosition.includes(getPrevchip(i)) && currWhitePosition.includes(getNextchip(i))) {
+                    millPieces.add(i)
+                    millPieces.add(getPrevchip(i))
+                    millPieces.add(getNextchip(i))
+                }
+                if(i === 1 || i === 3 || i === 5 || i === 7) {
+                    if(currWhitePosition.includes(i) && currWhitePosition.includes(getUpchip(i)) && currWhitePosition.includes(getUpchip(getUpchip(i)))) {
+                        millPieces.add(i)
+                        millPieces.add(getUpchip(i))
+                        millPieces.add(getUpchip(getUpchip(i)))
+                    }
+                }
+            }
+
+            return [ [...currWhitePosition].filter(x => !millPieces.has(x)), [...millPieces] ]
+        }
+
+        return [null, null]
+    }
+
+    const removePiece = (id) => {
+        const position = parseInt(id.split('-')[1])
+        let changeList = []
+
+        // check for remove enemy condition and remove piece
+        if(isRemoveWhite) {
+            let [removablePieces, millPieces] = checkPieces()
+    
+            if(removablePieces === null && millPieces === null)
+                return
+
+            if(removablePieces === null || removablePieces.length === 0)
+                removablePieces = millPieces
+    
+            if(currWhitePosition.includes(position) && removablePieces.includes(position)) {
+                changeList.push({ id , property: "board-slot-default" })
+                currWhitePosition.splice(currWhitePosition.indexOf(position), 1)
+
+                if((position&1) === 0) {
+                    // front
+                    changeList.push({ id: `line-${position}-${getNextchip(position)}`, property: "line-default" })
+                    changeList.push({ id: `line-${getNextchip(position)}-${getNextchip(getNextchip(position))}`, property: "line-default" })
+
+                    // back
+                    changeList.push({ id: `line-${getPrevchip(position)}-${position}`, property: "line-default" })
+                    changeList.push({ id: `line-${getPrevchip(getPrevchip(position))}-${getPrevchip(position)}`, property: "line-default" })
+                }
+                else if(getRing(position) === 2) {
+                    // left
+                    changeList.push({ id: `line-${getPrevchip(position)}-${position}`, property: "line-default" })
+                    
+                    // right
+                    changeList.push({ id: `line-${position}-${getNextchip(position)}`, property: "line-default" })
+                    
+                    // bottom
+                    changeList.push({ id: `line-${getDownchip(position)}-${position}`, property: "line-default" })
+
+                    // top
+                    changeList.push({ id: `line-${position}-${getUpchip(position)}`, property: "line-default" })
+                }
+                else {
+                    if(getRing(position) === 1) {
+                        // 2 top
+                        changeList.push({ id: `line-${position}-${getUpchip(position)}`, property: "line-default" })
+                        changeList.push({ id: `line-${getUpchip(position)}-${getUpchip(getUpchip(position))}`, property: "line-default" })
+                    }
+                    else if(getRing(position) === 3) {
+                        // 2 bottom
+                        changeList.push({ id: `line-${getDownchip(position)}-${position}`, property: "line-default" })
+                        changeList.push({ id: `line-${getDownchip(getDownchip(position))}-${getDownchip(position)}`, property: "line-default" })
+                    }
+
+                    // left
+                    changeList.push({ id: `line-${getPrevchip(position)}-${position}`, property: "line-default" })
+                    
+                    // right
+                    changeList.push({ id: `line-${position}-${getNextchip(position)}`, property: "line-default" })
+                }
+
+                setRemoveWhite(false)
+                changeTurn(turn + 1)
+            }
+
+            changeCSS(changeList)
+
+            return true
+        }
+
+        if(isRemoveBlack) {
+            let [removablePieces, millPieces] = checkPieces()
+    
+            if(removablePieces === null && millPieces === null)
+                return
+
+            if(removablePieces === null || removablePieces.length === 0)
+                removablePieces = millPieces
+    
+            if(currBlackPosition.includes(position) && removablePieces.includes(position)) {
+                changeList.push({ id , property: "board-slot-default" })
+                currBlackPosition.splice(currBlackPosition.indexOf(position), 1)
+
+                if((position&1) === 0) {
+                    // front
+                    changeList.push({ id: `line-${position}-${getNextchip(position)}`, property: "line-default" })
+                    changeList.push({ id: `line-${getNextchip(position)}-${getNextchip(getNextchip(position))}`, property: "line-default" })
+
+                    // back
+                    changeList.push({ id: `line-${getPrevchip(position)}-${position}`, property: "line-default" })
+                    changeList.push({ id: `line-${getPrevchip(getPrevchip(position))}-${getPrevchip(position)}`, property: "line-default" })
+                }
+                else if(getRing(position) === 2) {
+                    // left
+                    changeList.push({ id: `line-${getPrevchip(position)}-${position}`, property: "line-default" })
+                    
+                    // right
+                    changeList.push({ id: `line-${position}-${getNextchip(position)}`, property: "line-default" })
+                    
+                    // bottom
+                    changeList.push({ id: `line-${getDownchip(position)}-${position}`, property: "line-default" })
+
+                    // top
+                    changeList.push({ id: `line-${position}-${getUpchip(position)}`, property: "line-default" })
+                }
+                else {
+                    if(getRing(position) === 1) {
+                        // 2 top
+                        changeList.push({ id: `line-${position}-${getUpchip(position)}`, property: "line-default" })
+                        changeList.push({ id: `line-${getUpchip(position)}-${getUpchip(getUpchip(position))}`, property: "line-default" })
+                    }
+                    else if(getRing(position) === 3) {
+                        // 2 bottom
+                        changeList.push({ id: `line-${getDownchip(position)}-${position}`, property: "line-default" })
+                        changeList.push({ id: `line-${getDownchip(getDownchip(position))}-${getDownchip(position)}`, property: "line-default" })
+                    }
+
+                    // left
+                    changeList.push({ id: `line-${getPrevchip(position)}-${position}`, property: "line-default" })
+                    
+                    // right
+                    changeList.push({ id: `line-${position}-${getNextchip(position)}`, property: "line-default" })
+                }
+
+                setRemoveBlack(false)
+                changeTurn(turn + 1)
+            }
+
+            changeCSS(changeList)
+
+            return true
+        }
+
+        return false
     }
 
     return (
