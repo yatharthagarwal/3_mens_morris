@@ -3,10 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import IncDecCounter from './timer-selection';
 
-const GameConfiguration = ({ settimevalue, onHide, showModal }) => {
+const GameConfiguration = ({ settimevalue, onHide, showModal, setStartGame, changeTurn }) => {
     function choosetimer(value) {
-        console.log('choosetimer: ' + value);
-        settimevalue(value);
+        settimevalue(value * 60000);
     }
 
     return (
@@ -17,7 +16,7 @@ const GameConfiguration = ({ settimevalue, onHide, showModal }) => {
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
             >
-                <Modal.Header closeButton>
+                <Modal.Header>
                     <Modal.Title id="contained-modal-title-vcenter">
                         <h3>Configuration</h3>
                     </Modal.Title>
@@ -29,7 +28,7 @@ const GameConfiguration = ({ settimevalue, onHide, showModal }) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={onHide}>Start</Button>
+                    <Button onClick={() => { onHide(); }}>Done</Button>
                 </Modal.Footer>
             </Modal>
         </div>

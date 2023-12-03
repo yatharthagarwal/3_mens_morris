@@ -784,7 +784,7 @@ const Board = ({ changeTurn, turn, setWhiteCount, whiteCount, setBlackCount, bla
                 <button className='board-slot-default' id='slot-22' onClick={orchestrator}></button>
                 <button className='board-slot-default' id='slot-23' onClick={orchestrator}></button>
                 <button className='board-slot-default' id='slot-24' onClick={orchestrator}></button>
-                
+
                 <hr className='line-default' id='line-1-2' />
                 <hr className='line-default' id='line-2-3' />
                 <hr className='line-default' id='line-3-4' />

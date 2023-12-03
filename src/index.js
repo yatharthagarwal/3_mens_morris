@@ -9,6 +9,7 @@ import './CountdownTimer.css'
 import './arena.css'
 import './timer-selection.css'
 import App from './App';
+import 'animate.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
