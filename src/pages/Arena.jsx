@@ -132,12 +132,12 @@ const Arena = () => {
                         </Col>
                         <Col>
                             <ButtonGroup size="sm">
-                                <Button variant="warning" disabled={turn === 1} onClick={() => { startGame(true); setStartPlayerOne(true); setResetPlayerOne(false); setPausePlayerOne(false) }}>
+                                <Button variant="warning" disabled={turn === 1} onClick={() => { setStartGame(true); setStartPlayerOne(true); setResetPlayerOne(false); setPausePlayerOne(false) }}>
                                     Start
                                 </Button>
                             </ButtonGroup> {' '}
                             <ButtonGroup size="sm">
-                                <Button variant="danger" disabled={turn === 1} onClick={() => { startGame(false); setPausePlayerOne(false); setResetPlayerOne(false); setStartPlayerOne(false) }}>
+                                <Button variant="danger" disabled={turn === 1} onClick={() => { setStartGame(false); setPausePlayerOne(false); setResetPlayerOne(false); setStartPlayerOne(false) }}>
                                     Pause
                                 </Button>
                             </ButtonGroup>
@@ -198,12 +198,12 @@ const Arena = () => {
                             </Col>
                             <Col>
                                 <ButtonGroup size="sm">
-                                    <Button variant="warning" disabled={turn === 0} onClick={() => { startGame(true); setStartPlayerTwo(true); setResetPlayerTwo(false); setPausePlayerTwo(false) }}>
+                                    <Button variant="warning" disabled={turn === 0} onClick={() => { setStartGame(true); setStartPlayerTwo(true); setResetPlayerTwo(false); setPausePlayerTwo(false) }}>
                                         Start
                                     </Button>
                                 </ButtonGroup> {' '}
                                 <ButtonGroup size="sm">
-                                    <Button variant="danger" disabled={turn === 0} onClick={() => { startGame(false); setPausePlayerTwo(false); setResetPlayerTwo(false); setStartPlayerTwo(false) }}>
+                                    <Button variant="danger" disabled={turn === 0} onClick={() => { setStartGame(false); setPausePlayerTwo(false); setResetPlayerTwo(false); setStartPlayerTwo(false) }}>
                                         Pause
                                     </Button>
                                 </ButtonGroup>
