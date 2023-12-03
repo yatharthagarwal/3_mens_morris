@@ -1,5 +1,6 @@
-import {  useState, useEffect } from 'react';
-import { getRemainingTime } from './Utils/CountdownTimerUtils'
+import { useState, useEffect } from 'react';
+// import { getRemainingTime } from './Utils/CountdownTimerUtils'
+// import { CountDownTimer } from './Utils/CountdownTimerUtils';
 
 const defaultRemainingTime = {
     seconds: '00',
@@ -7,18 +8,29 @@ const defaultRemainingTime = {
     hours: '00',
 }
 
-const CountdownTimer = ({CountdownTimestampMs}) => {
+const CountdownTimer = ({ CountdownTimestampMs, startGame, resetGame, pauseGame, myCountDownTimer }) => {
     const [remainingTime, setremainingTime] = useState(defaultRemainingTime);
 
+    // const myCountDownTimer = new CountDownTimer();
+
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            updateRemainingTime(CountdownTimestampMs);
-        }, 1000);
-        return () => clearInterval(intervalId)
-    }, [CountdownTimestampMs])
+        if (resetGame) {
+            setremainingTime(myCountDownTimer.getRemainingTime(CountdownTimestampMs, true, false));
+        } else if (pauseGame) {
+            setremainingTime(myCountDownTimer.getRemainingTime(CountdownTimestampMs, false, true));
+        } else if (startGame && resetGame) {
+            setremainingTime(myCountDownTimer.getRemainingTime(CountdownTimestampMs, resetGame));
+        } else if (startGame) {
+            console.log('started: ');
+            const intervalId = setInterval(() => {
+                updateRemainingTime(CountdownTimestampMs);
+            }, 1000);
+            return () => clearInterval(intervalId)
+        }
+    }, [CountdownTimestampMs, startGame])
 
     function updateRemainingTime(countdown) {
-        setremainingTime(getRemainingTime(countdown))
+        setremainingTime(myCountDownTimer.getRemainingTime(countdown))
     }
 
     return (
@@ -28,7 +40,6 @@ const CountdownTimer = ({CountdownTimestampMs}) => {
             <span className='two-numbers'>{remainingTime.minutes}</span>
             <span>:</span>
             <span className='two-numbers'>{remainingTime.seconds}</span>
-            {/* <span>:</span> */}
         </div>
     )
 }

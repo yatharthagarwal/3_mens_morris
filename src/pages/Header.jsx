@@ -14,18 +14,12 @@ import { ButtonGroup } from 'react-bootstrap';
 const Header = () => {
     const [manualModalShow, setManualModalShow] = React.useState(false);
 
-    // let navigate = useNavigate(); 
-
-    // function directToArena() {
-    //     console.log('called');
-    //     navigate('arena');
-    // }
-  
     return (
         <React.Fragment>
             <>
                 {[false].map((expand) => (
                     <Navbar key={expand} expand={expand} className="bg-dark mb-3" sticky="top" variant='dark'>
+
                     <Container fluid>
                         <Navbar.Brand href="#">9 Men's Morris</Navbar.Brand>
                         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
@@ -61,9 +55,10 @@ const Header = () => {
                         </Navbar.Offcanvas>
                     </Container>
                     {/* <Outlet /> */}
+
                     </Navbar>
                 ))}
-                </>
+            </>
         </React.Fragment>
     )
 }
