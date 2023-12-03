@@ -17,7 +17,7 @@ const Board = ({ changeTurn, turn, setWhiteCount, whiteCount, setBlackCount, bla
 
         const position = parseInt(id.split("-")[1])
 
-        if(pausePlayerOne || pausePlayerTwo)
+        if (pausePlayerOne || pausePlayerTwo)
             return
 
         // check whether game finished

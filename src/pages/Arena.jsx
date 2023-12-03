@@ -68,6 +68,25 @@ const Arena = () => {
         }
     }
 
+    useEffect(() => {
+        console.log('startGame: ' + startGame);
+        if (startGame) {
+            console.log('turn: ', turn, ' got chance');
+            setResetPlayerOne(false);
+            setResetPlayerTwo(false);
+            if (turn == 0) {
+                console.log('running player 1');
+                setPausePlayerTwo(true);
+                setPausePlayerOne(false);
+                setStartPlayerOne(true);
+            } else {
+                setPausePlayerOne(true);
+                setPausePlayerTwo(false);
+                setStartPlayerTwo(true);
+            }
+        }
+    }, [startGame, turn]);
+
     return (
         <div className="arena">
             <div className="comps">
