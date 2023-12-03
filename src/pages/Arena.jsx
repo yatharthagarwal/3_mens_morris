@@ -29,6 +29,7 @@ const Arena = () => {
         setPlayerOneTimer(val * 60000)
         setPlayerTwoTimer(val * 60000)
     }
+
     return (
         <div className="arena">
             <div>
