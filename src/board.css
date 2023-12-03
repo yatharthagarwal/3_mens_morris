@@ -21,7 +21,9 @@
   border-radius: 50%;
   height: 20px;
   width: 20px;
-  background-color: #964B00;
+  background-color: rgb(175, 123, 59);
+  border: 0px;
+  opacity: 0.5;
 }
 
 .board-slot-white {
@@ -29,6 +31,7 @@
   height: 20px;
   width: 20px;
   background-color: #FFFFFF;
+  box-shadow: 5px 5px 15px #000000;
 }
 
 .board-slot-black {
@@ -36,16 +39,15 @@
   height: 20px;
   width: 20px;
   background-color: #000000;
+  box-shadow: 5px 5px 15px black;
 }
 
 .board-slot-green-shadow {
-  opacity: 0.7;
-  box-shadow: 0 0 10px green;
+  box-shadow: 0 0 15px green;
 }
 
 .board-slot-red-shadow {
-  opacity: 0.7;
-  box-shadow: 0 0 10px red;
+  box-shadow: 0 0 15px red;
 }
 
 #slot-1 {

@@ -17,12 +17,8 @@ function App() {
       <Header />
       <BrowserRouter>
         <Routes>
-          <Route path='board' element={<Board />} />
-          <Route path="manual" element={<Manual />} />
+          <Route path='/' element={<Arena />} />
           <Route path="arena" element={<Arena />} />
-          <Route path='counter' element={<Counter />} />
-          <Route path='game-config' element={<GameConfiguration />} />
-          <Route path='timer-select' element={<TimerSelection />} />
         </Routes>
       </BrowserRouter>
       <Footer />

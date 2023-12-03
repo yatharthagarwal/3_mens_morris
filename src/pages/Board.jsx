@@ -104,11 +104,32 @@ const Board = ({ changeTurn, turn, setWhiteCount, whiteCount, setBlackCount, bla
             document.getElementById(`slot-${i}`).className = document.getElementById(`slot-${i}`).className.split(' ')[0]
     }
 
+    const haveValidMove = (positions) => {
+        for(let element of positions) {
+            if((!currBlackPosition.includes(getPrevchip(element)) && !currWhitePosition.includes(getPrevchip(element)))
+                || (!currBlackPosition.includes(getNextchip(element)) && !currWhitePosition.includes(getNextchip(element))))
+                return true
+
+            if((element & 1) === 1) {
+                if(getRing(element) >= 1 && getRing(element) <= 2) {
+                    if((!currBlackPosition.includes(getUpchip(element)) && !currWhitePosition.includes(getUpchip(element))))
+                    return true
+                }
+                if(getRing(element) >= 2 && getRing(element) <= 3) {
+                    if((!currBlackPosition.includes(getDownchip(element)) && !currWhitePosition.includes(getDownchip(element))))
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+
     const isGameOver = () => {
-        if (whiteCount === 0 && currWhitePosition.length < 3)
+        if ((whiteCount === 0 && currWhitePosition.length < 3) || !haveValidMove(currWhitePosition))
             setWin(1)
 
-        if (blackCount === 0 && currBlackPosition.length < 3)
+        if ((blackCount === 0 && currBlackPosition.length < 3) || !haveValidMove(currBlackPosition))
             setWin(0)
     }
 
