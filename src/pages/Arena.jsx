@@ -85,7 +85,23 @@ const Arena = () => {
                 setStartPlayerTwo(true);
             }
         }
-    }, [startGame, turn]);
+        if (win.length > 0) {
+            console.log('win lem: ' + win.length);
+            Swal.fire({
+                title: `Player ${win == '0' ? 'WHITE' : 'BLACK'} WON!`,
+            });
+        }
+    }, [startGame, turn, win]);
+
+    function play() {
+        if (playerOneTimer === 0 || playerTwoTimer === 0) {
+            // alert('Please set timer ');
+            Swal.fire("Please set timer");
+        } else {
+            setStartGame(true);
+            changeTurn(0);
+        }
+    }
 
     return (
         <div className="arena">
