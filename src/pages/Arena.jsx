@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState } from 'react';
 import Board from "./Board";
 import CountdownTimer from "./CountdownTimer/CountdownTimer"
 import Button from 'react-bootstrap/Button';
@@ -6,7 +6,8 @@ import Modal from 'react-bootstrap/Modal';
 import GameConfiguration from './game-config';
 
 const Arena = (props) => {
-    const [modalShow, setModalShow] = React.useState(false);
+    const [modalShow, setModalShow] = useState(false);
+
     return (
         <div className="arena">
             <div>
