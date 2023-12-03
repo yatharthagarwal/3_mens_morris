@@ -39,7 +39,7 @@ const Arena = () => {
             console.log('turn: ', turn, ' got chance');
             setResetPlayerOne(false);
             setResetPlayerTwo(false);
-            if (turn == 0) {
+            if (turn === 0) {
                 console.log('running player 1');
                 setPausePlayerTwo(true);
                 setPausePlayerOne(false);
@@ -53,7 +53,7 @@ const Arena = () => {
         if (win.length > 0) {
             console.log('win lem: ' + win.length);
             Swal.fire({
-                title: `Player ${win == '0' ? 'WHITE' : 'BLACK'} WON!`,
+                title: `Player ${win === '0' ? 'WHITE' : 'BLACK'} WON!`,
             });
         }
     }, [startGame, turn, win]);
@@ -74,7 +74,7 @@ const Arena = () => {
             console.log('turn: ', turn, ' got chance');
             setResetPlayerOne(false);
             setResetPlayerTwo(false);
-            if (turn == 0) {
+            if (turn === 0) {
                 console.log('running player 1');
                 setPausePlayerTwo(true);
                 setPausePlayerOne(false);
@@ -88,7 +88,7 @@ const Arena = () => {
         if (win.length > 0) {
             console.log('win lem: ' + win.length);
             Swal.fire({
-                title: `Player ${win == '0' ? 'WHITE' : 'BLACK'} WON!`,
+                title: `Player ${win === '0' ? 'WHITE' : 'BLACK'} WON!`,
             });
         }
     }, [startGame, turn, win]);
@@ -137,12 +137,12 @@ const Arena = () => {
                         </Col>
                         <Col>
                             <ButtonGroup size="sm">
-                                <Button variant="warning" disabled={turn == 1} onClick={() => { setStartPlayerOne(true); setResetPlayerOne(false); setPausePlayerOne(false) }}>
+                                <Button variant="warning" disabled={turn === 1} onClick={() => { setStartPlayerOne(true); setResetPlayerOne(false); setPausePlayerOne(false) }}>
                                     Start
                                 </Button>
                             </ButtonGroup> {' '}
                             <ButtonGroup size="sm">
-                                <Button variant="danger" disabled={turn == 1} onClick={() => { setPausePlayerOne(false); setResetPlayerOne(false); setStartPlayerOne(false) }}>
+                                <Button variant="danger" disabled={turn === 1} onClick={() => { setPausePlayerOne(false); setResetPlayerOne(false); setStartPlayerOne(false) }}>
                                     Pause
                                 </Button>
                             </ButtonGroup>
@@ -157,8 +157,8 @@ const Arena = () => {
                             <Board
                                 changeTurn={changeTurn}
                                 turn={turn}
-                                decWhiteCount={decWhiteCount}
-                                decBlackCount={decBlackCount}
+                                setWhiteCount={decWhiteCount}
+                                setBlackCount={decBlackCount}
                                 whiteCount={whiteCount}
                                 blackCount={blackCount}
                                 pausePlayerOne={pausePlayerOne}
@@ -169,7 +169,7 @@ const Arena = () => {
                     </Row>
                     <Row>
                         {/* <div className="player" xl={{ span: 6, order: 4, offset: 3 }}>
-                            <Container autoFocus={turn == 1}> */}
+                            <Container autoFocus={turn === 1}> */}
                         <Row className="player">
                             <Col className='timer' lg={2}>
                                 <CountdownTimer className='timer'
@@ -202,12 +202,12 @@ const Arena = () => {
                             </Col>
                             <Col>
                                 <ButtonGroup size="sm">
-                                    <Button variant="warning" disabled={turn == 0} onClick={() => { setStartPlayerTwo(true); setResetPlayerTwo(false); setPausePlayerTwo(false) }}>
+                                    <Button variant="warning" disabled={turn === 0} onClick={() => { setStartPlayerTwo(true); setResetPlayerTwo(false); setPausePlayerTwo(false) }}>
                                         Start
                                     </Button>
                                 </ButtonGroup> {' '}
                                 <ButtonGroup size="sm">
-                                    <Button variant="danger" disabled={turn == 0} onClick={() => { setPausePlayerTwo(false); setResetPlayerTwo(false); setStartPlayerTwo(false) }}>
+                                    <Button variant="danger" disabled={turn === 0} onClick={() => { setPausePlayerTwo(false); setResetPlayerTwo(false); setStartPlayerTwo(false) }}>
                                         Pause
                                     </Button>
                                 </ButtonGroup>
