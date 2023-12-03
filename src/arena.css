@@ -1,5 +1,7 @@
 .arena {
-    background-image: url('../public/assets/canvas.jpg');
+    background-image: url('../public/assets/board_texture.jpg');
+    background-size: contain;
+    border: 10px solid black;
     padding: 40px;
 }
 
