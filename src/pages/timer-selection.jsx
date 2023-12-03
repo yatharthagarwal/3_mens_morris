@@ -1,47 +1,5 @@
-// import Col from 'react-bootstrap/Col';
-// import ListGroup from 'react-bootstrap/ListGroup';
-// import Row from 'react-bootstrap/Row';
-// import Tab from 'react-bootstrap/Tab';
-// import Form from 'react-bootstrap/Form';
-
-// function TimerSelection() {
-//   return (
-
-//     <>
-//       <Form.Label>Range</Form.Label>
-//       <Form.Range />
-//     </>
-
-//     // <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
-//     //   <Row>
-//     //     <Col>
-//     //       <ListGroup>
-//     //         <ListGroup.Item action href="#three">
-//     //           3
-//     //         </ListGroup.Item>
-//     //         <ListGroup.Item action href="#five">
-//     //           5
-//     //         </ListGroup.Item>
-//     //         <ListGroup.Item action href="#ten">
-//     //           10
-//     //         </ListGroup.Item>
-//     //       </ListGroup>
-//     //     </Col>
-//     //     <Col>
-//     //       <Tab.Content>
-//     //         <Tab.Pane eventKey="#three">3 Minutes</Tab.Pane>
-//     //         <Tab.Pane eventKey="#five">5 Minutes</Tab.Pane>
-//     //         <Tab.Pane eventKey="#ten">10 Minutes</Tab.Pane>
-//     //       </Tab.Content>
-//     //     </Col>
-//     //   </Row>
-//     // </Tab.Container>
-//   );
-// }
-
-// export default TimerSelection;
-
 import { useState } from "react";
+import { Button, Col, Container, Row } from "react-bootstrap";
 
 function IncDecCounter({ choosetimer }) {
   let [num, setNum] = useState(0);
@@ -62,17 +20,34 @@ function IncDecCounter({ choosetimer }) {
 
   return (
     <>
-      <div className="col-xl-2">
-        <div className="input-group">
+      <div className="d-grid gap-1">
+        <Button size="lg" variant="primary" onClick={decNum} style={{ borderRadius: '5px' }}>-</Button>
+        <input type="text" className="" value={num} onChange={handleChange} />
+        <Button size="lg" variant="primary" onClick={incNum} style={{ borderRadius: '5px' }}>+</Button>
+
+        {/* <Container fluid>
+          <Row>
+            <Col md={4}>
+              <Button size="lg" variant="primary" onClick={decNum} style={{ borderRadius: '5px' }}>-</Button>
+            </Col>
+            <Col lg={4}>
+              <input type="text" className="form-control" value={num} onChange={handleChange} />
+            </Col>
+            <Col lg={4}>
+              <Button size="lg" variant="primary" onClick={incNum} style={{ borderRadius: '5px' }}>+</Button>
+            </Col>
+          </Row>
+        </Container> */}
+        {/* <div className="input-group">
           <div className="input-group-prepend">
-            <button className="btn btn-primary" type="button" onClick={decNum}>-</button>
-          </div>
+            <button className="btn btn-primary" type="button" onClick={decNum} style={{ borderRadius: '50%' }}>-</button>
+          </div> {' '}
           <input type="text" className="form-control" value={num} onChange={handleChange} />
           <div className="input-group-prepend">
-            <button className="btn btn-primary" type="button" onClick={incNum}>+</button>
+            <button className="btn btn-primary" type="button" onClick={incNum} style={{ borderRadius: '50%' }}>+</button>
           </div>
-        </div>
-      </div>
+        </div> */}
+      </div >
     </>
   );
 }

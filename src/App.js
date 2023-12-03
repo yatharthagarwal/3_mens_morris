@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import Manual from './pages/Manual'
-import Home from './pages/Home'
 import Board from './pages/Board'
 import Counter from './pages/Counter'
 import Arena from './pages/Arena'
@@ -17,29 +16,15 @@ function App() {
       <Header />
       <BrowserRouter>
         <Routes>
-          {/* <Route path='/' element={<Home />}> */}
           <Route path='board' element={<Board />} />
           <Route path="manual" element={<Manual />} />
           <Route path="arena" element={<Arena />} />
           <Route path='counter' element={<Counter />} />
           <Route path='game-config' element={<GameConfiguration />} />
           <Route path='timer-select' element={<TimerSelection />} />
-          {/* </Route> */}
         </Routes>
       </BrowserRouter>
       <Footer />
-      {/* <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Home />}>
-            <Route path='board' element={<Board />} />
-            <Route path="manual" element={<Manual />} />
-            <Route path="arena" element={<Arena />} />
-            <Route path='counter' element={<Counter />} />
-            <Route path='game-config' element={<GameConfiguration />} />
-            <Route path='timer-select' element={<TimerSelection />} />
-          </Route>
-        </Routes>
-      </BrowserRouter> */}
     </div >
   );
 }

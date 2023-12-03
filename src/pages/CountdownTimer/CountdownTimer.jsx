@@ -8,12 +8,16 @@ const defaultRemainingTime = {
     hours: '00',
 }
 
-const CountdownTimer = ({ CountdownTimestampMs, startGame, resetGame, pauseGame, myCountDownTimer }) => {
+const CountdownTimer = ({ CountdownTimestampMs, startGame, resetGame, pauseGame, myCountDownTimer, turn }) => {
     const [remainingTime, setremainingTime] = useState(defaultRemainingTime);
 
     // const myCountDownTimer = new CountDownTimer();
 
     useEffect(() => {
+        console.log("happeninh for : ", turn);
+        console.log("resetGame: ", resetGame);
+        console.log("pauseGame", pauseGame);
+        console.log("startGame", startGame);
         if (resetGame) {
             setremainingTime(myCountDownTimer.getRemainingTime(CountdownTimestampMs, true, false));
         } else if (pauseGame) {
@@ -27,7 +31,7 @@ const CountdownTimer = ({ CountdownTimestampMs, startGame, resetGame, pauseGame,
             }, 1000);
             return () => clearInterval(intervalId)
         }
-    }, [CountdownTimestampMs, startGame])
+    }, [CountdownTimestampMs, startGame, turn, resetGame, pauseGame])
 
     function updateRemainingTime(countdown) {
         setremainingTime(myCountDownTimer.getRemainingTime(countdown))

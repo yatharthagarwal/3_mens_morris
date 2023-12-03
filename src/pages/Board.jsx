@@ -2,8 +2,8 @@ import { React, useState } from 'react'
 
 // remove piece highlight
 
-const Board = () => {
-    const [turn, changeTurn] = useState(0)
+const Board = ({ changeTurn, turn }) => {
+    // const [turn, changeTurn] = useState(0)
     const [whiteCount, decWhiteCount] = useState(9)
     const [blackCount, decBlackCount] = useState(9)
     const [whitePosition, setWhitePosition] = useState([])
@@ -14,6 +14,7 @@ const Board = () => {
     const [moveWhite, setMoveWhite] = useState(-1)
     const [blackMoves, setBlackMoves] = useState([])
     const [whiteMoves, setWhiteMoves] = useState([])
+    // let turn = 0;
 
     const orchestrator = (event) => {
         const id = event.currentTarget.id
@@ -21,285 +22,285 @@ const Board = () => {
         const position = parseInt(id.split("-")[1])
 
         // move piece logic
-        if(moveBlack !== -1 && blackMoves.includes(position)) {
-            if(!placePiece("black", id))
+        if (moveBlack !== -1 && blackMoves.includes(position)) {
+            if (!placePiece("black", id))
                 return
 
             document.getElementById(`slot-${moveBlack}`).className = "board-slot-default"
             blackPosition.splice(blackPosition.indexOf(moveBlack), 1)
             decBlackCount(0)
 
-            if((moveBlack&1) === 0) {
+            if ((moveBlack & 1) === 0) {
                 // front
-                document.getElementById(`line-${moveBlack}-${(moveBlack % 8 === 0 ? moveBlack-7 : moveBlack+1)}`).className = "line-default"
-                document.getElementById(`line-${(moveBlack % 8 === 0 ? moveBlack-7 : moveBlack+1)}-${(moveBlack % 8 === 0 ? moveBlack-6 : moveBlack+2)}`).className = "line-default"
+                document.getElementById(`line-${moveBlack}-${(moveBlack % 8 === 0 ? moveBlack - 7 : moveBlack + 1)}`).className = "line-default"
+                document.getElementById(`line-${(moveBlack % 8 === 0 ? moveBlack - 7 : moveBlack + 1)}-${(moveBlack % 8 === 0 ? moveBlack - 6 : moveBlack + 2)}`).className = "line-default"
 
                 // back
-                document.getElementById(`line-${(moveBlack-1)}-${moveBlack}`).className = "line-default"
-                document.getElementById(`line-${((moveBlack-2) % 8 === 0 ? moveBlack+6 : moveBlack-2)}-${moveBlack-1}`).className = "line-default"
+                document.getElementById(`line-${(moveBlack - 1)}-${moveBlack}`).className = "line-default"
+                document.getElementById(`line-${((moveBlack - 2) % 8 === 0 ? moveBlack + 6 : moveBlack - 2)}-${moveBlack - 1}`).className = "line-default"
             }
-            else if((moveBlack-1) / 8 >= 1 && (moveBlack-1) / 8 < 2) {
+            else if ((moveBlack - 1) / 8 >= 1 && (moveBlack - 1) / 8 < 2) {
                 // left
-                document.getElementById(`line-${((moveBlack-1) % 8 === 0 ? moveBlack+7 : moveBlack-1)}-${moveBlack}`).className = "line-default"
-                
+                document.getElementById(`line-${((moveBlack - 1) % 8 === 0 ? moveBlack + 7 : moveBlack - 1)}-${moveBlack}`).className = "line-default"
+
                 // right
-                document.getElementById(`line-${moveBlack}-${moveBlack+1}`).className = "line-default"
-                
+                document.getElementById(`line-${moveBlack}-${moveBlack + 1}`).className = "line-default"
+
                 // bottom
-                document.getElementById(`line-${moveBlack-8}-${moveBlack}`).className = "line-default"
-                
+                document.getElementById(`line-${moveBlack - 8}-${moveBlack}`).className = "line-default"
+
                 // top
-                document.getElementById(`line-${moveBlack}-${moveBlack+8}`).className = "line-default"
+                document.getElementById(`line-${moveBlack}-${moveBlack + 8}`).className = "line-default"
             }
             else {
-                if(moveBlack < 8) {
+                if (moveBlack < 8) {
                     // 2 top
-                    document.getElementById(`line-${moveBlack}-${moveBlack+8}`).className = "line-default"
-                    document.getElementById(`line-${moveBlack+8}-${moveBlack+16}`).className = "line-default"
+                    document.getElementById(`line-${moveBlack}-${moveBlack + 8}`).className = "line-default"
+                    document.getElementById(`line-${moveBlack + 8}-${moveBlack + 16}`).className = "line-default"
                 }
                 else {
                     // 2 bottom
-                    document.getElementById(`line-${moveBlack-8}-${moveBlack}`).className = "line-default"
-                    document.getElementById(`line-${moveBlack-16}-${moveBlack-8}`).className = "line-default"
+                    document.getElementById(`line-${moveBlack - 8}-${moveBlack}`).className = "line-default"
+                    document.getElementById(`line-${moveBlack - 16}-${moveBlack - 8}`).className = "line-default"
                 }
 
                 // left
-                document.getElementById(`line-${((moveBlack-1) % 8 === 0 ? moveBlack+7 : moveBlack-1)}-${moveBlack}`).className = "line-default"
-                
+                document.getElementById(`line-${((moveBlack - 1) % 8 === 0 ? moveBlack + 7 : moveBlack - 1)}-${moveBlack}`).className = "line-default"
+
                 // right
-                document.getElementById(`line-${moveBlack}-${moveBlack+1}`).className = "line-default"
+                document.getElementById(`line-${moveBlack}-${moveBlack + 1}`).className = "line-default"
             }
 
-            if(!check3("black", id))
-                changeTurn(turn+1)
+            if (!check3("black", id))
+                changeTurn((turn + 1) % 2)
 
             setMoveBlack(-1)
             return
         }
-        else if(moveWhite !== -1 && whiteMoves.includes(position)) {
-            if(!placePiece("white", id))
+        else if (moveWhite !== -1 && whiteMoves.includes(position)) {
+            if (!placePiece("white", id))
                 return
 
             document.getElementById(`slot-${moveWhite}`).className = "board-slot-default"
             whitePosition.splice(whitePosition.indexOf(moveWhite), 1)
             decWhiteCount(0)
 
-            if((moveWhite&1) === 0) {
+            if ((moveWhite & 1) === 0) {
                 // front
-                document.getElementById(`line-${moveWhite}-${(moveWhite % 8 === 0 ? moveWhite-7 : moveWhite+1)}`).className = "line-default"
-                document.getElementById(`line-${(moveWhite % 8 === 0 ? moveWhite-7 : moveWhite+1)}-${(moveWhite % 8 === 0 ? moveWhite-6 : moveWhite+2)}`).className = "line-default"
+                document.getElementById(`line-${moveWhite}-${(moveWhite % 8 === 0 ? moveWhite - 7 : moveWhite + 1)}`).className = "line-default"
+                document.getElementById(`line-${(moveWhite % 8 === 0 ? moveWhite - 7 : moveWhite + 1)}-${(moveWhite % 8 === 0 ? moveWhite - 6 : moveWhite + 2)}`).className = "line-default"
 
                 // back
-                document.getElementById(`line-${(moveWhite-1)}-${moveWhite}`).className = "line-default"
-                document.getElementById(`line-${((moveWhite-2) % 8 === 0 ? moveWhite+6 : moveWhite-2)}-${moveWhite-1}`).className = "line-default"
+                document.getElementById(`line-${(moveWhite - 1)}-${moveWhite}`).className = "line-default"
+                document.getElementById(`line-${((moveWhite - 2) % 8 === 0 ? moveWhite + 6 : moveWhite - 2)}-${moveWhite - 1}`).className = "line-default"
             }
-            else if((moveWhite-1) / 8 >= 1 && (moveWhite-1) / 8 < 2) {
+            else if ((moveWhite - 1) / 8 >= 1 && (moveWhite - 1) / 8 < 2) {
                 // left
-                document.getElementById(`line-${((moveWhite-1) % 8 === 0 ? moveWhite+7 : moveWhite-1)}-${moveWhite}`).className = "line-default"
-                
+                document.getElementById(`line-${((moveWhite - 1) % 8 === 0 ? moveWhite + 7 : moveWhite - 1)}-${moveWhite}`).className = "line-default"
+
                 // right
-                document.getElementById(`line-${moveWhite}-${moveWhite+1}`).className = "line-default"
-                
+                document.getElementById(`line-${moveWhite}-${moveWhite + 1}`).className = "line-default"
+
                 // bottom
-                document.getElementById(`line-${moveWhite-8}-${moveWhite}`).className = "line-default"
-                
+                document.getElementById(`line-${moveWhite - 8}-${moveWhite}`).className = "line-default"
+
                 // top
-                document.getElementById(`line-${moveWhite}-${moveWhite+8}`).className = "line-default"
+                document.getElementById(`line-${moveWhite}-${moveWhite + 8}`).className = "line-default"
             }
             else {
-                if(moveWhite < 8) {
+                if (moveWhite < 8) {
                     // 2 top
-                    document.getElementById(`line-${moveWhite}-${moveWhite+8}`).className = "line-default"
-                    document.getElementById(`line-${moveWhite+8}-${moveWhite+16}`).className = "line-default"
+                    document.getElementById(`line-${moveWhite}-${moveWhite + 8}`).className = "line-default"
+                    document.getElementById(`line-${moveWhite + 8}-${moveWhite + 16}`).className = "line-default"
                 }
                 else {
                     // 2 bottom
-                    document.getElementById(`line-${moveWhite-8}-${moveWhite}`).className = "line-default"
-                    document.getElementById(`line-${moveWhite-16}-${moveWhite-8}`).className = "line-default"
+                    document.getElementById(`line-${moveWhite - 8}-${moveWhite}`).className = "line-default"
+                    document.getElementById(`line-${moveWhite - 16}-${moveWhite - 8}`).className = "line-default"
                 }
 
                 // left
-                document.getElementById(`line-${((moveWhite-1) % 8 === 0 ? moveWhite+7 : moveWhite-1)}-${moveWhite}`).className = "line-default"
-                
+                document.getElementById(`line-${((moveWhite - 1) % 8 === 0 ? moveWhite + 7 : moveWhite - 1)}-${moveWhite}`).className = "line-default"
+
                 // right
-                document.getElementById(`line-${moveWhite}-${moveWhite+1}`).className = "line-default"
+                document.getElementById(`line-${moveWhite}-${moveWhite + 1}`).className = "line-default"
             }
 
-            if(!check3("white", id))
-                changeTurn(turn+1)
+            if (!check3("white", id))
+                changeTurn((turn + 1) % 2)
 
             setMoveWhite(-1)
             return
         }
 
         // check for remove enemy condition and remove piece
-        if(removeWhite) {
+        if (removeWhite) {
             console.log("white remove")
-            if(whitePosition.includes(position)) {
+            if (whitePosition.includes(position)) {
                 document.getElementById(id).className = "board-slot-default"
                 whitePosition.splice(whitePosition.indexOf(position), 1)
 
-                if((position&1) === 0) {
+                if ((position & 1) === 0) {
                     // front
-                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position-7 : position+1)}`).className = "line-default"
-                    document.getElementById(`line-${(position % 8 === 0 ? position-7 : position+1)}-${(position % 8 === 0 ? position-6 : position+2)}`).className = "line-default"
-    
+                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position - 7 : position + 1)}`).className = "line-default"
+                    document.getElementById(`line-${(position % 8 === 0 ? position - 7 : position + 1)}-${(position % 8 === 0 ? position - 6 : position + 2)}`).className = "line-default"
+
                     // back
-                    document.getElementById(`line-${(position-1)}-${position}`).className = "line-default"
-                    document.getElementById(`line-${((position-2) % 8 === 0 ? position+6 : position-2)}-${position-1}`).className = "line-default"
+                    document.getElementById(`line-${(position - 1)}-${position}`).className = "line-default"
+                    document.getElementById(`line-${((position - 2) % 8 === 0 ? position + 6 : position - 2)}-${position - 1}`).className = "line-default"
                 }
-                else if((position-1) / 8 >= 1 && (position-1) / 8 < 2) {
+                else if ((position - 1) / 8 >= 1 && (position - 1) / 8 < 2) {
                     // left
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-default"
-                    
+                    document.getElementById(`line-${((position - 1) % 8 === 0 ? position + 7 : position - 1)}-${position}`).className = "line-default"
+
                     // right
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-default"
-                    
+                    document.getElementById(`line-${position}-${position + 1}`).className = "line-default"
+
                     // bottom
-                    document.getElementById(`line-${position-8}-${position}`).className = "line-default"
-                    
+                    document.getElementById(`line-${position - 8}-${position}`).className = "line-default"
+
                     // top
-                    document.getElementById(`line-${position}-${position+8}`).className = "line-default"
+                    document.getElementById(`line-${position}-${position + 8}`).className = "line-default"
                 }
                 else {
-                    if(position < 8) {
+                    if (position < 8) {
                         // 2 top
-                        document.getElementById(`line-${position}-${position+8}`).className = "line-default"
-                        document.getElementById(`line-${position+8}-${position+16}`).className = "line-default"
+                        document.getElementById(`line-${position}-${position + 8}`).className = "line-default"
+                        document.getElementById(`line-${position + 8}-${position + 16}`).className = "line-default"
                     }
                     else {
                         // 2 bottom
-                        document.getElementById(`line-${position-8}-${position}`).className = "line-default"
-                        document.getElementById(`line-${position-16}-${position-8}`).className = "line-default"
+                        document.getElementById(`line-${position - 8}-${position}`).className = "line-default"
+                        document.getElementById(`line-${position - 16}-${position - 8}`).className = "line-default"
                     }
-    
+
                     // left
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-default"
-                    
+                    document.getElementById(`line-${((position - 1) % 8 === 0 ? position + 7 : position - 1)}-${position}`).className = "line-default"
+
                     // right
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-default"
+                    document.getElementById(`line-${position}-${position + 1}`).className = "line-default"
                 }
 
                 setRemoveWhite(false)
-                changeTurn(turn + 1)
+                changeTurn((turn + 1) % 2)
             }
             return
         }
 
-        if(removeBlack) {
+        if (removeBlack) {
             console.log("black remove", position)
-            if(blackPosition.includes(position)) {
+            if (blackPosition.includes(position)) {
                 document.getElementById(id).className = "board-slot-default"
                 blackPosition.splice(blackPosition.indexOf(position), 1)
 
-                if((position&1) === 0) {
+                if ((position & 1) === 0) {
                     // front
-                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position-7 : position+1)}`).className = "line-default"
-                    document.getElementById(`line-${(position % 8 === 0 ? position-7 : position+1)}-${(position % 8 === 0 ? position-6 : position+2)}`).className = "line-default"
-    
+                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position - 7 : position + 1)}`).className = "line-default"
+                    document.getElementById(`line-${(position % 8 === 0 ? position - 7 : position + 1)}-${(position % 8 === 0 ? position - 6 : position + 2)}`).className = "line-default"
+
                     // back
-                    document.getElementById(`line-${(position-1)}-${position}`).className = "line-default"
-                    document.getElementById(`line-${((position-2) % 8 === 0 ? position+6 : position-2)}-${position-1}`).className = "line-default"
+                    document.getElementById(`line-${(position - 1)}-${position}`).className = "line-default"
+                    document.getElementById(`line-${((position - 2) % 8 === 0 ? position + 6 : position - 2)}-${position - 1}`).className = "line-default"
                 }
-                else if((position-1)/8 >= 1 && (position-1)/8 < 2) {
+                else if ((position - 1) / 8 >= 1 && (position - 1) / 8 < 2) {
                     console.log("hi")
                     // left
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-default"
-                    
+                    document.getElementById(`line-${((position - 1) % 8 === 0 ? position + 7 : position - 1)}-${position}`).className = "line-default"
+
                     // right
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-default"
-                    
+                    document.getElementById(`line-${position}-${position + 1}`).className = "line-default"
+
                     // // bottom
-                    document.getElementById(`line-${position-8}-${position}`).className = "line-default"
-                    
+                    document.getElementById(`line-${position - 8}-${position}`).className = "line-default"
+
                     // // top
-                    document.getElementById(`line-${position}-${position+8}`).className = "line-default"
+                    document.getElementById(`line-${position}-${position + 8}`).className = "line-default"
                 }
                 else {
-                    if(position < 8) {
+                    if (position < 8) {
                         // 2 top
                         console.log("wow")
-                        document.getElementById(`line-${position}-${position+8}`).className = "line-default"
-                        document.getElementById(`line-${position+8}-${position+16}`).className = "line-default"
+                        document.getElementById(`line-${position}-${position + 8}`).className = "line-default"
+                        document.getElementById(`line-${position + 8}-${position + 16}`).className = "line-default"
                     }
                     else {
                         // 2 bottom
-                        document.getElementById(`line-${position-8}-${position}`).className = "line-default"
-                        document.getElementById(`line-${position-16}-${position-8}`).className = "line-default"
+                        document.getElementById(`line-${position - 8}-${position}`).className = "line-default"
+                        document.getElementById(`line-${position - 16}-${position - 8}`).className = "line-default"
                     }
-    
+
                     // left
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-default"
-                    
+                    document.getElementById(`line-${((position - 1) % 8 === 0 ? position + 7 : position - 1)}-${position}`).className = "line-default"
+
                     // right
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-default"
+                    document.getElementById(`line-${position}-${position + 1}`).className = "line-default"
                 }
 
-               setRemoveBlack(false)
-               changeTurn(turn + 1)
+                setRemoveBlack(false)
+                changeTurn((turn + 1) % 2)
             }
             return
         }
 
-        if((turn&1) === 0 && whiteCount > 0) {
-            if(!placePiece("white", id))
+        if ((turn & 1) === 0 && whiteCount > 0) {
+            if (!placePiece("white", id))
                 return
 
-            if(!check3("white", id))
-                changeTurn(turn + 1)
+            if (!check3("white", id))
+                changeTurn((turn + 1) % 2)
         }
-        else if((turn&1) === 1 && blackCount > 0) {
-            if(!placePiece("black", id))
+        else if ((turn & 1) === 1 && blackCount > 0) {
+            if (!placePiece("black", id))
                 return
-            
-            if(!check3("black", id))
-                changeTurn(turn + 1)
+
+            if (!check3("black", id))
+                changeTurn((turn + 1) % 2)
         }
         else {
             // move chip logic
-            if((position&1) === 0) {
-                if((turn&1) === 0) {
-                    if(whitePosition.includes(position)) {
-                        setWhiteMoves([((position-1) % 8 === 0 ? position+7 : position-1), (position % 8 === 0 ? position-7 : position+1)])
+            if ((position & 1) === 0) {
+                if ((turn & 1) === 0) {
+                    if (whitePosition.includes(position)) {
+                        setWhiteMoves([((position - 1) % 8 === 0 ? position + 7 : position - 1), (position % 8 === 0 ? position - 7 : position + 1)])
                         setMoveWhite(position)
                         setMoveBlack(-1)
                     }
                 }
                 else {
-                    if(blackPosition.includes(position)) {
-                        setBlackMoves([((position-1) % 8 === 0 ? position+7 : position-1), (position % 8 === 0 ? position-7 : position+1)])
+                    if (blackPosition.includes(position)) {
+                        setBlackMoves([((position - 1) % 8 === 0 ? position + 7 : position - 1), (position % 8 === 0 ? position - 7 : position + 1)])
                         setMoveWhite(-1)
                         setMoveBlack(position)
                     }
                 }
             }
-            else if((position-1) / 8 >= 1 && (position-1) / 8 < 2) {
-                if((turn&1) === 0) {
-                    if(whitePosition.includes(position)) {
-                        setWhiteMoves([((position-1) % 8 === 0 ? position+7 : position-1), position+1, position-8, position+8])
+            else if ((position - 1) / 8 >= 1 && (position - 1) / 8 < 2) {
+                if ((turn & 1) === 0) {
+                    if (whitePosition.includes(position)) {
+                        setWhiteMoves([((position - 1) % 8 === 0 ? position + 7 : position - 1), position + 1, position - 8, position + 8])
                         setMoveWhite(position)
                         setMoveBlack(-1)
                     }
                 }
                 else {
-                    if(blackPosition.includes(position)) {
-                        setBlackMoves([((position-1) % 8 === 0 ? position+7 : position-1), position+1, position-8, position+8])
+                    if (blackPosition.includes(position)) {
+                        setBlackMoves([((position - 1) % 8 === 0 ? position + 7 : position - 1), position + 1, position - 8, position + 8])
                         setMoveWhite(-1)
                         setMoveBlack(position)
                     }
                 }
             }
             else {
-                if((turn&1) === 0) {
-                    if(whitePosition.includes(position)) {
-                        setWhiteMoves([(position < 8 ? position+8 : position-8), position+1, position-1])
+                if ((turn & 1) === 0) {
+                    if (whitePosition.includes(position)) {
+                        setWhiteMoves([(position < 8 ? position + 8 : position - 8), position + 1, position - 1])
                         setMoveWhite(position)
                         setMoveBlack(-1)
                     }
                 }
                 else {
-                    if(blackPosition.includes(position)) {
-                        setBlackMoves([(position < 8 ? position+8 : position-8), position+1, position-1])
+                    if (blackPosition.includes(position)) {
+                        setBlackMoves([(position < 8 ? position + 8 : position - 8), position + 1, position - 1])
                         setMoveWhite(-1)
                         setMoveBlack(position)
                     }
@@ -314,8 +315,8 @@ const Board = () => {
     const placePiece = (color, elementId) => {
         const position = parseInt(elementId.split("-")[1])
 
-        if(color === "white") {
-            if(!(blackPosition.includes(position)) && !(whitePosition.includes(position))) {
+        if (color === "white") {
+            if (!(blackPosition.includes(position)) && !(whitePosition.includes(position))) {
                 document.getElementById(elementId).className = "board-slot-white"
                 // addWhitePosition([...whitePosition, position])
                 whitePosition.push(position)
@@ -328,7 +329,7 @@ const Board = () => {
             }
         }
         else {
-            if(!(whitePosition.includes(position)) && !(blackPosition.includes(position))) {
+            if (!(whitePosition.includes(position)) && !(blackPosition.includes(position))) {
                 document.getElementById(elementId).className = "board-slot-black"
                 // addBlackPosition(blackPosition => [...blackPosition, position])
                 blackPosition.push(position)
@@ -436,120 +437,120 @@ const Board = () => {
         //     }
         // }
         let ret = false
-        if(color === "white") {
-            if((position&1) === 0) {
-                if(whitePosition.includes(position % 8 === 0 ? position-7 : position+1) && whitePosition.includes((position % 8 === 0 ? position-6 : position+2))) {
+        if (color === "white") {
+            if ((position & 1) === 0) {
+                if (whitePosition.includes(position % 8 === 0 ? position - 7 : position + 1) && whitePosition.includes((position % 8 === 0 ? position - 6 : position + 2))) {
                     // front
-                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position-7 : position+1)}`).className = "line-green"
-                    document.getElementById(`line-${(position % 8 === 0 ? position-7 : position+1)}-${(position % 8 === 0 ? position-6 : position+2)}`).className = "line-green"
+                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position - 7 : position + 1)}`).className = "line-green"
+                    document.getElementById(`line-${(position % 8 === 0 ? position - 7 : position + 1)}-${(position % 8 === 0 ? position - 6 : position + 2)}`).className = "line-green"
                     setRemoveBlack(true)
                     ret = true
                 }
-                if(whitePosition.includes((position-2) % 8 === 0 ? position+6 : position-2) && whitePosition.includes(position-1)) {
+                if (whitePosition.includes((position - 2) % 8 === 0 ? position + 6 : position - 2) && whitePosition.includes(position - 1)) {
                     // back
-                    document.getElementById(`line-${position-1}-${position}`).className = "line-green"
-                    document.getElementById(`line-${((position-2) % 8 === 0 ? position+6 : position-2)}-${position-1}`).className = "line-green"
+                    document.getElementById(`line-${position - 1}-${position}`).className = "line-green"
+                    document.getElementById(`line-${((position - 2) % 8 === 0 ? position + 6 : position - 2)}-${position - 1}`).className = "line-green"
                     setRemoveBlack(true)
                     ret = true
                 }
             }
-            else if((position-1) / 8 >= 1 && (position-1) / 8 < 2) {
+            else if ((position - 1) / 8 >= 1 && (position - 1) / 8 < 2) {
                 ret = false
-                if(whitePosition.includes(position-1) && whitePosition.includes(position+1)) {
+                if (whitePosition.includes(position - 1) && whitePosition.includes(position + 1)) {
                     // left right
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-green"
+                    document.getElementById(`line-${((position - 1) % 8 === 0 ? position + 7 : position - 1)}-${position}`).className = "line-green"
+                    document.getElementById(`line-${position}-${position + 1}`).className = "line-green"
                     setRemoveBlack(true)
                     ret = true
                 }
-                if(whitePosition.includes(position-8) && whitePosition.includes(position+8)) {
+                if (whitePosition.includes(position - 8) && whitePosition.includes(position + 8)) {
                     // bottom top
-                    document.getElementById(`line-${position-8}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+8}`).className = "line-green"
+                    document.getElementById(`line-${position - 8}-${position}`).className = "line-green"
+                    document.getElementById(`line-${position}-${position + 8}`).className = "line-green"
                     setRemoveBlack(true)
                     ret = true
                 }
             }
             else {
-                if(position < 8) {
-                    if(whitePosition.includes(position+8) && whitePosition.includes(position+16)) {
-                        document.getElementById(`line-${position}-${position+8}`).className = "line-green"
-                        document.getElementById(`line-${position+8}-${position+16}`).className = "line-green"
+                if (position < 8) {
+                    if (whitePosition.includes(position + 8) && whitePosition.includes(position + 16)) {
+                        document.getElementById(`line-${position}-${position + 8}`).className = "line-green"
+                        document.getElementById(`line-${position + 8}-${position + 16}`).className = "line-green"
                         setRemoveBlack(true)
                         ret = true
                     }
                 }
                 else {
-                    if(whitePosition.includes(position-8) && whitePosition.includes(position-16)) {
-                        document.getElementById(`line-${position-8}-${position}`).className = "line-green"
-                        document.getElementById(`line-${position-16}-${position-8}`).className = "line-green"
+                    if (whitePosition.includes(position - 8) && whitePosition.includes(position - 16)) {
+                        document.getElementById(`line-${position - 8}-${position}`).className = "line-green"
+                        document.getElementById(`line-${position - 16}-${position - 8}`).className = "line-green"
                         setRemoveBlack(true)
                         ret = true
                     }
                 }
-                if(whitePosition.includes((position-1) % 8 === 0 ? position+7 : position-1) && whitePosition.includes(position+1)) {
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-green"
+                if (whitePosition.includes((position - 1) % 8 === 0 ? position + 7 : position - 1) && whitePosition.includes(position + 1)) {
+                    document.getElementById(`line-${((position - 1) % 8 === 0 ? position + 7 : position - 1)}-${position}`).className = "line-green"
+                    document.getElementById(`line-${position}-${position + 1}`).className = "line-green"
                     setRemoveBlack(true)
-                   ret = true
+                    ret = true
                 }
             }
         }
         else {
-            if((position&1) === 0) {
-                if(blackPosition.includes(position % 8 === 0 ? position-7 : position+1) && blackPosition.includes((position % 8 === 0 ? position-6 : position+2))) {
+            if ((position & 1) === 0) {
+                if (blackPosition.includes(position % 8 === 0 ? position - 7 : position + 1) && blackPosition.includes((position % 8 === 0 ? position - 6 : position + 2))) {
                     // front
-                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position-7 : position+1)}`).className = "line-green"
-                    document.getElementById(`line-${(position % 8 === 0 ? position-7 : position+1)}-${(position % 8 === 0 ? position-6 : position+2)}`).className = "line-green"
+                    document.getElementById(`line-${position}-${(position % 8 === 0 ? position - 7 : position + 1)}`).className = "line-green"
+                    document.getElementById(`line-${(position % 8 === 0 ? position - 7 : position + 1)}-${(position % 8 === 0 ? position - 6 : position + 2)}`).className = "line-green"
                     setRemoveWhite(true)
                     ret = true
                 }
-                if(blackPosition.includes((position-2) % 8 === 0 ? position+6 : position-2) && blackPosition.includes(position-1)) {
+                if (blackPosition.includes((position - 2) % 8 === 0 ? position + 6 : position - 2) && blackPosition.includes(position - 1)) {
                     // back
-                    document.getElementById(`line-${position-1}-${position}`).className = "line-green"
-                    document.getElementById(`line-${((position-2) % 8 === 0 ? position+6 : position-2)}-${position-1}`).className = "line-green"
+                    document.getElementById(`line-${position - 1}-${position}`).className = "line-green"
+                    document.getElementById(`line-${((position - 2) % 8 === 0 ? position + 6 : position - 2)}-${position - 1}`).className = "line-green"
                     setRemoveWhite(true)
                     ret = true
                 }
             }
-            else if((position-1) / 8 >= 1 && (position-1) / 8 < 2) {
-                if(blackPosition.includes(position-1) && blackPosition.includes(position+1)) {
+            else if ((position - 1) / 8 >= 1 && (position - 1) / 8 < 2) {
+                if (blackPosition.includes(position - 1) && blackPosition.includes(position + 1)) {
                     // left right
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-green"
+                    document.getElementById(`line-${((position - 1) % 8 === 0 ? position + 7 : position - 1)}-${position}`).className = "line-green"
+                    document.getElementById(`line-${position}-${position + 1}`).className = "line-green"
                     setRemoveWhite(true)
                     ret = true
                 }
-                if(blackPosition.includes(position-8) && blackPosition.includes(position+8)) {
+                if (blackPosition.includes(position - 8) && blackPosition.includes(position + 8)) {
                     // bottom top
-                    document.getElementById(`line-${position-8}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+8}`).className = "line-green"
+                    document.getElementById(`line-${position - 8}-${position}`).className = "line-green"
+                    document.getElementById(`line-${position}-${position + 8}`).className = "line-green"
                     setRemoveWhite(true)
                     ret = true
                 }
             }
             else {
-                if(position < 8) {
-                    if(blackPosition.includes(position+8) && blackPosition.includes(position+16)) {
-                        document.getElementById(`line-${position}-${position+8}`).className = "line-green"
-                        document.getElementById(`line-${position+8}-${position+16}`).className = "line-green"
+                if (position < 8) {
+                    if (blackPosition.includes(position + 8) && blackPosition.includes(position + 16)) {
+                        document.getElementById(`line-${position}-${position + 8}`).className = "line-green"
+                        document.getElementById(`line-${position + 8}-${position + 16}`).className = "line-green"
                         setRemoveWhite(true)
                         ret = true
                     }
                 }
                 else {
-                    if(blackPosition.includes(position-8) && blackPosition.includes(position-16)) {
-                        document.getElementById(`line-${position-8}-${position}`).className = "line-green"
-                        document.getElementById(`line-${position-16}-${position-8}`).className = "line-green"
+                    if (blackPosition.includes(position - 8) && blackPosition.includes(position - 16)) {
+                        document.getElementById(`line-${position - 8}-${position}`).className = "line-green"
+                        document.getElementById(`line-${position - 16}-${position - 8}`).className = "line-green"
                         setRemoveWhite(true)
                         ret = true
                     }
                 }
-                if(blackPosition.includes((position-1) % 8 === 0 ? position+7 : position-1) && blackPosition.includes(position+1)) {
-                    document.getElementById(`line-${((position-1) % 8 === 0 ? position+7 : position-1)}-${position}`).className = "line-green"
-                    document.getElementById(`line-${position}-${position+1}`).className = "line-green"
+                if (blackPosition.includes((position - 1) % 8 === 0 ? position + 7 : position - 1) && blackPosition.includes(position + 1)) {
+                    document.getElementById(`line-${((position - 1) % 8 === 0 ? position + 7 : position - 1)}-${position}`).className = "line-green"
+                    document.getElementById(`line-${position}-${position + 1}`).className = "line-green"
                     setRemoveWhite(true)
-                   ret = true
+                    ret = true
                 }
             }
         }
@@ -584,7 +585,7 @@ const Board = () => {
                 <button className='board-slot-default' id='slot-22' onClick={orchestrator}></button>
                 <button className='board-slot-default' id='slot-23' onClick={orchestrator}></button>
                 <button className='board-slot-default' id='slot-24' onClick={orchestrator}></button>
-                
+
                 <hr className='line-default' id='line-1-2' />
                 <hr className='line-default' id='line-2-3' />
                 <hr className='line-default' id='line-3-4' />

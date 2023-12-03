@@ -3,9 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import IncDecCounter from './timer-selection';
 
-const GameConfiguration = ({ settimevalue, onHide, showModal }) => {
+const GameConfiguration = ({ settimevalue, onHide, showModal, setStartGame, changeTurn }) => {
     function choosetimer(value) {
-        console.log('choosetimer: ' + value);
         settimevalue(value);
     }
 
@@ -29,7 +28,7 @@ const GameConfiguration = ({ settimevalue, onHide, showModal }) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={onHide}>Start</Button>
+                    <Button onClick={() => { onHide(); setStartGame(true); changeTurn(0) }}>Start</Button>
                 </Modal.Footer>
             </Modal>
         </div>
