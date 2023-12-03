@@ -13,7 +13,7 @@ import { ButtonGroup } from 'react-bootstrap';
 
 const Header = () => {
     const [manualModalShow, setManualModalShow] = React.useState(false);
-  
+
     // let navigate = useNavigate(); 
 
     // function directToArena() {
@@ -29,20 +29,20 @@ const Header = () => {
                     <Container fluid>
                         <Navbar.Brand href="#">9 Men's Morris</Navbar.Brand>
                         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
-                        <Navbar.Offcanvas
+                        <Navbar.Offcanvas style={{background: 'bisque'}}
                         id={`offcanvasNavbar-expand-${expand}`}
                         aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
                         placement="end"
                         >
-                        <Offcanvas.Header closeButton>
+                        <Offcanvas.Header closeButton style={{background: 'rgb(162, 99, 23)'}}>
                             <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                            Guest
+                            <b>Guest</b>
                             </Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <Nav className="justify-content-end flex-grow-1 pe-3">
-                                <Button variant="primary" onClick={() => setManualModalShow(true)}>
-                                    Manual
+                                <Button variant="primary" onClick={() => setManualModalShow(true)} style={{background: 'rgb(195, 151, 75)'}}>
+                                    <b>Manual</b>
                                 </Button>
                                 <br />
                                 {/* <Nav.Link href="manual" onClick={() => setModalShow(true)}>Manual</Nav.Link> */}
@@ -52,8 +52,8 @@ const Header = () => {
                                 />
 
                                 
-                                <Button variant="primary" href="arena">
-                                    Play
+                                <Button variant="primary" href="arena" style={{background: 'rgb(195, 151, 75)'}}>
+                                    <b>Play</b>
                                 </Button>
                             {/* <Nav.Link href="arena">Play</Nav.Link> */}
                             </Nav>
