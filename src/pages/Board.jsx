@@ -2,7 +2,7 @@ import { React, useState } from 'react'
 
 // remove piece highlight
 
-const Board = ({ changeTurn, turn, setWhiteCount, whiteCount, setBlackCount, blackCount, setWin, pausePlayerOne, pausePlayerTwo }) => {
+const Board = ({ changeTurn, turn, setWhiteCount, whiteCount, setBlackCount, blackCount, setWin, startGame, pausePlayerOne, pausePlayerTwo }) => {
     const [currWhitePosition, setcurrWhitePosition] = useState([])
     const [currBlackPosition, setcurrBlackPosition] = useState([])
     const [isRemoveBlack, setRemoveBlack] = useState(false)
@@ -17,7 +17,7 @@ const Board = ({ changeTurn, turn, setWhiteCount, whiteCount, setBlackCount, bla
 
         const position = parseInt(id.split("-")[1])
 
-        if (pausePlayerOne || pausePlayerTwo)
+        if (startGame === false)
             return
 
         // check whether game finished
