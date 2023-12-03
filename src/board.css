@@ -13,6 +13,8 @@
   grid-column: 4 / span 6;
   height: 500px;
   background-color: bisque;
+  border: 10px solid rgb(175, 123, 59);
+  box-shadow: 0 0 20px black;
 }
 
 .board-slot-default {
