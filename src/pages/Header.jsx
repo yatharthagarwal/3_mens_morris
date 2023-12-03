@@ -16,11 +16,10 @@ const Header = () => {
 
     return (
         <React.Fragment>
-            <>
+            <div>
                 {[false].map((expand) => (
-                    <Navbar key={expand} expand={expand} className="bg-dark mb-3" sticky="top" variant='dark'>
-
-                    <Container fluid>
+                <Navbar style={{paddingTop: '0px', paddingBottom: '0px'}} key={expand} expand={expand} className="bg-dark mb-3" sticky="top" variant='dark'>
+                    <Container style={{height: '60px', backgroundColor: 'rgb(162, 99, 23)'}} fluid>
                         <Navbar.Brand href="#">9 Men's Morris</Navbar.Brand>
                         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
                         <Navbar.Offcanvas style={{background: 'bisque'}}
@@ -58,7 +57,7 @@ const Header = () => {
 
                     </Navbar>
                 ))}
-            </>
+            </div>
         </React.Fragment>
     )
 }
