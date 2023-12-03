@@ -125,7 +125,10 @@ const Arena = () => {
                                 decWhiteCount={decWhiteCount}
                                 decBlackCount={decBlackCount}
                                 whiteCount={whiteCount}
-                                blackCount={blackCount} />
+                                blackCount={blackCount}
+                                pausePlayerOne={pausePlayerOne}
+                                pausePlayerTwo={pausePlayerTwo}
+                                setWin={setWin} />
                         </Col>
                         {/* </div> */}
                     </Row>
